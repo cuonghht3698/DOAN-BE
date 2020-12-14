@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Device_BE.Migrations
 {
     [DbContext(typeof(DeviceContext))]
-    [Migration("20201214074625_aaaa")]
-    partial class aaaa
+    [Migration("20201214143348_initial3")]
+    partial class initial3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,7 +55,7 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<Guid>("LoaiTuDienId")
+                    b.Property<Guid?>("LoaiTuDienId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MaTuDien")
@@ -756,6 +756,10 @@ namespace Device_BE.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("AnhId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasMaxLength(220);
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -767,13 +771,12 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("GioiThieu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HoTen")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<Guid?>("IdAnh")
-                        .HasColumnType("uniqueidentifier")
-                        .HasMaxLength(220);
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -795,6 +798,8 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AnhId");
+
                     b.ToTable("HTUser");
 
                     b.HasData(
@@ -802,9 +807,10 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 14, 46, 24, 725, DateTimeKind.Local).AddTicks(6899),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 33, 48, 472, DateTimeKind.Local).AddTicks(3836),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
+                            GioiThieu = "Hello world Im Iron Man",
                             HoTen = "ad CườngNB",
                             PasswordHash = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
                             TenKhongDau = "nbc",
@@ -815,9 +821,10 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 14, 46, 24, 726, DateTimeKind.Local).AddTicks(9014),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 33, 48, 473, DateTimeKind.Local).AddTicks(2321),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
+                            GioiThieu = "Xin chào hihi",
                             HoTen = "KH",
                             PasswordHash = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
                             TenKhongDau = "nbc",
@@ -857,9 +864,7 @@ namespace Device_BE.Migrations
                 {
                     b.HasOne("Device_BE.Models.MDevice.CMLoaiTuDien", "LoaiTuDien")
                         .WithMany("CMTuDiens")
-                        .HasForeignKey("LoaiTuDienId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LoaiTuDienId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.DMAnh", b =>
@@ -1003,6 +1008,13 @@ namespace Device_BE.Migrations
                     b.HasOne("Device_BE.Models.MDevice.HTRole", "HTRole")
                         .WithMany()
                         .HasForeignKey("IdRole");
+                });
+
+            modelBuilder.Entity("Device_BE.Models.MDevice.HTUser", b =>
+                {
+                    b.HasOne("Device_BE.Models.MDevice.DMAnh", "Anh")
+                        .WithMany("HTUsers")
+                        .HasForeignKey("AnhId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.HTUserRole", b =>

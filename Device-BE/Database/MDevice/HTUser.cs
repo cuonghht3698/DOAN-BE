@@ -28,7 +28,13 @@ namespace Device_BE.Models.MDevice
         public string PasswordHash { get; set; }
         public DateTime CreateDate { get; set; }
         public bool Active { get; set; }
+
+        public string GioiThieu { get; set; }
+
         [StringLength(220)]
-        public Nullable<Guid> IdAnh { get; set; }
+        public Nullable<Guid> AnhId { get; set; }
+
+        public virtual DMAnh Anh { get; set; }
+
     }
 }

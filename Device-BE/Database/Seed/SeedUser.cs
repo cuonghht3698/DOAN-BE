@@ -49,8 +49,9 @@ namespace Device_BE.Models.Seed
                 CreateDate = DateTime.Now,
                 Active = true,
                 DiaChi = "Hà Nội",
-                IdAnh = null,
+                AnhId = null,
                 Sdt = null,
+                GioiThieu = "Hello world Im Iron Man",
                 TenKhongDau = "nbc",
                 Tuoi = 22
             }, new HTUser
@@ -63,8 +64,9 @@ namespace Device_BE.Models.Seed
                 CreateDate = DateTime.Now,
                 Active = true,
                 DiaChi = "Hà Nội",
-                IdAnh = null,
+                AnhId = null,
                 Sdt = null,
+                GioiThieu = "Xin chào hihi",
                 TenKhongDau = "nbc",
                 Tuoi = 22
             });

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Device_BE.Migrations
 {
     [DbContext(typeof(DeviceContext))]
-    [Migration("20201206103435_update seed")]
-    partial class updateseed
+    [Migration("20201214135305_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,8 +55,7 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<Guid?>("IdLoaiTuDien")
-                        .IsRequired()
+                    b.Property<Guid?>("LoaiTuDienId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MaTuDien")
@@ -78,7 +77,7 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdLoaiTuDien");
+                    b.HasIndex("LoaiTuDienId");
 
                     b.ToTable("CMTuDien");
                 });
@@ -803,7 +802,7 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 6, 17, 34, 35, 293, DateTimeKind.Local).AddTicks(6487),
+                            CreateDate = new DateTime(2020, 12, 14, 20, 53, 5, 120, DateTimeKind.Local).AddTicks(7453),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
                             HoTen = "ad CườngNB",
@@ -816,7 +815,7 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 6, 17, 34, 35, 294, DateTimeKind.Local).AddTicks(7096),
+                            CreateDate = new DateTime(2020, 12, 14, 20, 53, 5, 121, DateTimeKind.Local).AddTicks(5795),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
                             HoTen = "KH",
@@ -856,11 +855,9 @@ namespace Device_BE.Migrations
 
             modelBuilder.Entity("Device_BE.Models.MDevice.CMTuDien", b =>
                 {
-                    b.HasOne("Device_BE.Models.MDevice.CMLoaiTuDien", "CMLoaiTuDien")
-                        .WithMany()
-                        .HasForeignKey("IdLoaiTuDien")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Device_BE.Models.MDevice.CMLoaiTuDien", "LoaiTuDien")
+                        .WithMany("CMTuDiens")
+                        .HasForeignKey("LoaiTuDienId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.DMAnh", b =>

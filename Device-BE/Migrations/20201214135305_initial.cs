@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Device_BE.Migrations
 {
-    public partial class aa21222jdh : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -145,7 +145,7 @@ namespace Device_BE.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     MaTuDien = table.Column<string>(maxLength: 50, nullable: false),
-                    IdLoaiTuDien = table.Column<Guid>(nullable: false),
+                    LoaiTuDienId = table.Column<Guid>(nullable: true),
                     TenNgan = table.Column<string>(maxLength: 50, nullable: true),
                     Ten = table.Column<string>(maxLength: 100, nullable: false),
                     GhiChu = table.Column<string>(maxLength: 100, nullable: true),
@@ -156,11 +156,11 @@ namespace Device_BE.Migrations
                 {
                     table.PrimaryKey("PK_CMTuDien", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CMTuDien_CMLoaiTuDien_IdLoaiTuDien",
-                        column: x => x.IdLoaiTuDien,
+                        name: "FK_CMTuDien_CMLoaiTuDien_LoaiTuDienId",
+                        column: x => x.LoaiTuDienId,
                         principalTable: "CMLoaiTuDien",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -571,24 +571,33 @@ namespace Device_BE.Migrations
                 {
                     { new Guid("9b76ed13-ce77-4d41-0908-08d8223497a3"), "giamdoc", "GIAMDOC", "Giám Đốc" },
                     { new Guid("9b76ed13-ce77-4d41-0908-08d5423497a3"), "admin", "ADMIN", "admin" },
-                    { new Guid("9b76ed13-ce77-4d41-0908-08d8123497a3"), "admin", "ADMIN", "Nhân viên" },
+                    { new Guid("9b76ed13-ce77-4d41-0908-08d8123497a3"), "nhanvien", "ADMIN", "Nhân viên" },
                     { new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8"), "khachhang", "Khách hàng", "Khách hàng" }
                 });
 
             migrationBuilder.InsertData(
                 table: "HTUser",
                 columns: new[] { "Id", "Active", "CreateDate", "DiaChi", "Email", "HoTen", "IdAnh", "PasswordHash", "Sdt", "TenKhongDau", "Tuoi", "Username" },
-                values: new object[] { new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"), true, new DateTime(2020, 12, 4, 17, 30, 19, 356, DateTimeKind.Local).AddTicks(2974), "Hà Nội", "cuong@gmail.com", "ad CườngNB", null, "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, "nbc", 22, "admin" });
+                values: new object[,]
+                {
+                    { new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"), true, new DateTime(2020, 12, 14, 20, 53, 5, 120, DateTimeKind.Local).AddTicks(7453), "Hà Nội", "cuong@gmail.com", "ad CườngNB", null, "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, "nbc", 22, "admin" },
+                    { new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"), true, new DateTime(2020, 12, 14, 20, 53, 5, 121, DateTimeKind.Local).AddTicks(5795), "Hà Nội", "cuong@gmail.com", "KH", null, "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, "nbc", 22, "cuong" }
+                });
 
             migrationBuilder.InsertData(
                 table: "HTUserRole",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { new Guid("9b76ed13-ce77-4d41-0908-08d5423497a3"), new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3") });
 
+            migrationBuilder.InsertData(
+                table: "HTUserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8"), new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2") });
+
             migrationBuilder.CreateIndex(
-                name: "IX_CMTuDien_IdLoaiTuDien",
+                name: "IX_CMTuDien_LoaiTuDienId",
                 table: "CMTuDien",
-                column: "IdLoaiTuDien");
+                column: "LoaiTuDienId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DMAnh_IdLoaiAnh",

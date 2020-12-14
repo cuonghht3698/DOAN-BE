@@ -754,6 +754,10 @@ namespace Device_BE.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("AnhId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasMaxLength(220);
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -765,13 +769,12 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("GioiThieu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HoTen")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<Guid?>("IdAnh")
-                        .HasColumnType("uniqueidentifier")
-                        .HasMaxLength(220);
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -793,6 +796,8 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AnhId");
+
                     b.ToTable("HTUser");
 
                     b.HasData(
@@ -800,9 +805,10 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 15, 8, 31, 915, DateTimeKind.Local).AddTicks(2740),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 33, 48, 472, DateTimeKind.Local).AddTicks(3836),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
+                            GioiThieu = "Hello world Im Iron Man",
                             HoTen = "ad CườngNB",
                             PasswordHash = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
                             TenKhongDau = "nbc",
@@ -813,9 +819,10 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 15, 8, 31, 916, DateTimeKind.Local).AddTicks(4261),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 33, 48, 473, DateTimeKind.Local).AddTicks(2321),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
+                            GioiThieu = "Xin chào hihi",
                             HoTen = "KH",
                             PasswordHash = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
                             TenKhongDau = "nbc",
@@ -999,6 +1006,13 @@ namespace Device_BE.Migrations
                     b.HasOne("Device_BE.Models.MDevice.HTRole", "HTRole")
                         .WithMany()
                         .HasForeignKey("IdRole");
+                });
+
+            modelBuilder.Entity("Device_BE.Models.MDevice.HTUser", b =>
+                {
+                    b.HasOne("Device_BE.Models.MDevice.DMAnh", "Anh")
+                        .WithMany("HTUsers")
+                        .HasForeignKey("AnhId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.HTUserRole", b =>

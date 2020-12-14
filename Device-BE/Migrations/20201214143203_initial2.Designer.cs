@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Device_BE.Migrations
 {
     [DbContext(typeof(DeviceContext))]
-    [Migration("20201214080832_aaa2a")]
-    partial class aaa2a
+    [Migration("20201214143203_initial2")]
+    partial class initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -756,6 +756,10 @@ namespace Device_BE.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("AnhId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasMaxLength(220);
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -767,13 +771,12 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("GioiThieu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HoTen")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<Guid?>("IdAnh")
-                        .HasColumnType("uniqueidentifier")
-                        .HasMaxLength(220);
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -795,6 +798,8 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AnhId");
+
                     b.ToTable("HTUser");
 
                     b.HasData(
@@ -802,7 +807,7 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 15, 8, 31, 915, DateTimeKind.Local).AddTicks(2740),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 32, 2, 689, DateTimeKind.Local).AddTicks(5723),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
                             HoTen = "ad CườngNB",
@@ -815,7 +820,7 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 14, 15, 8, 31, 916, DateTimeKind.Local).AddTicks(4261),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 32, 2, 690, DateTimeKind.Local).AddTicks(4268),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
                             HoTen = "KH",
@@ -1001,6 +1006,13 @@ namespace Device_BE.Migrations
                     b.HasOne("Device_BE.Models.MDevice.HTRole", "HTRole")
                         .WithMany()
                         .HasForeignKey("IdRole");
+                });
+
+            modelBuilder.Entity("Device_BE.Models.MDevice.HTUser", b =>
+                {
+                    b.HasOne("Device_BE.Models.MDevice.DMAnh", "Anh")
+                        .WithMany("HTUsers")
+                        .HasForeignKey("AnhId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.HTUserRole", b =>

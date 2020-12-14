@@ -22,5 +22,7 @@ namespace Device_BE.Models.MDevice
 
         [ForeignKey("IdLoaiAnh")]
         public CMTuDien CMTuDien { get; set; }
+
+        public virtual ICollection<HTUser> HTUsers { get; set; }
     }
 }

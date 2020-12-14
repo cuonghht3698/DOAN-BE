@@ -14,7 +14,6 @@ namespace Device_BE.Models.MDevice
         [Required]
         [StringLength(50)]
         public string MaTuDien { get; set; }
-        public Guid? LoaiTuDienId { get; set; }
 
         [StringLength(50)]
         public string TenNgan { get; set; }
@@ -25,7 +24,7 @@ namespace Device_BE.Models.MDevice
         public string GhiChu { get; set; }
         public int UuTien { get; set; }
         public bool Active { get; set; }
-
+        public Guid? LoaiTuDienId { get; set; }
         public virtual CMLoaiTuDien LoaiTuDien { get; set; }
 
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Device_BE.Migrations
 {
     [DbContext(typeof(DeviceContext))]
-    [Migration("20201204103019_aa21222jdh")]
-    partial class aa21222jdh
+    [Migration("20201214142756_initial1")]
+    partial class initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,8 +55,7 @@ namespace Device_BE.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<Guid?>("IdLoaiTuDien")
-                        .IsRequired()
+                    b.Property<Guid?>("LoaiTuDienId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MaTuDien")
@@ -78,7 +77,7 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdLoaiTuDien");
+                    b.HasIndex("LoaiTuDienId");
 
                     b.ToTable("CMTuDien");
                 });
@@ -707,7 +706,7 @@ namespace Device_BE.Migrations
                         new
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d8123497a3"),
-                            Code = "admin",
+                            Code = "nhanvien",
                             MoTa = "ADMIN",
                             Ten = "Nhân viên"
                         },
@@ -757,6 +756,10 @@ namespace Device_BE.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("AnhId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasMaxLength(220);
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -771,10 +774,6 @@ namespace Device_BE.Migrations
                     b.Property<string>("HoTen")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<Guid?>("IdAnh")
-                        .HasColumnType("uniqueidentifier")
-                        .HasMaxLength(220);
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -796,6 +795,8 @@ namespace Device_BE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AnhId");
+
                     b.ToTable("HTUser");
 
                     b.HasData(
@@ -803,7 +804,7 @@ namespace Device_BE.Migrations
                         {
                             Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                             Active = true,
-                            CreateDate = new DateTime(2020, 12, 4, 17, 30, 19, 356, DateTimeKind.Local).AddTicks(2974),
+                            CreateDate = new DateTime(2020, 12, 14, 21, 27, 56, 179, DateTimeKind.Local).AddTicks(4215),
                             DiaChi = "Hà Nội",
                             Email = "cuong@gmail.com",
                             HoTen = "ad CườngNB",
@@ -811,6 +812,19 @@ namespace Device_BE.Migrations
                             TenKhongDau = "nbc",
                             Tuoi = 22,
                             Username = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
+                            Active = true,
+                            CreateDate = new DateTime(2020, 12, 14, 21, 27, 56, 180, DateTimeKind.Local).AddTicks(2533),
+                            DiaChi = "Hà Nội",
+                            Email = "cuong@gmail.com",
+                            HoTen = "KH",
+                            PasswordHash = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
+                            TenKhongDau = "nbc",
+                            Tuoi = 22,
+                            Username = "cuong"
                         });
                 });
 
@@ -833,16 +847,19 @@ namespace Device_BE.Migrations
                         {
                             RoleId = new Guid("9b76ed13-ce77-4d41-0908-08d5423497a3"),
                             UserId = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8"),
+                            UserId = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2")
                         });
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.CMTuDien", b =>
                 {
-                    b.HasOne("Device_BE.Models.MDevice.CMLoaiTuDien", "CMLoaiTuDien")
-                        .WithMany()
-                        .HasForeignKey("IdLoaiTuDien")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Device_BE.Models.MDevice.CMLoaiTuDien", "LoaiTuDien")
+                        .WithMany("CMTuDiens")
+                        .HasForeignKey("LoaiTuDienId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.DMAnh", b =>
@@ -986,6 +1003,13 @@ namespace Device_BE.Migrations
                     b.HasOne("Device_BE.Models.MDevice.HTRole", "HTRole")
                         .WithMany()
                         .HasForeignKey("IdRole");
+                });
+
+            modelBuilder.Entity("Device_BE.Models.MDevice.HTUser", b =>
+                {
+                    b.HasOne("Device_BE.Models.MDevice.DMAnh", "Anh")
+                        .WithMany("HTUsers")
+                        .HasForeignKey("AnhId");
                 });
 
             modelBuilder.Entity("Device_BE.Models.MDevice.HTUserRole", b =>

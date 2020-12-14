@@ -49,12 +49,5 @@ namespace Device_BE.Controllers
             
         }
 
-
-        //[HttpGet("{id}")]
-        //public ActionResult getProfile(Guid Id)
-        // { 
-        //    var user = _context.HTUsers.Find(Id);
-        //    return Ok(user);
-        // }
     }
 }
