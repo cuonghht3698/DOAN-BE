@@ -1,4 +1,4 @@
-﻿using Device_BE.Models.MDevice;
+﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,24 +14,24 @@ namespace Device_BE.Models.Seed
         public static void Seed2(this ModelBuilder modelBuilder)
         {
             //seed custom admin role
-            modelBuilder.Entity<HTRole>().HasData(new HTRole
+            modelBuilder.Entity<Htrole>().HasData(new Htrole
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d8223497a3"),
                 Ten = "Giám Đốc",
                 Code = "giamdoc",
                 MoTa = "GIAMDOC"
-            }, new HTRole {
+            }, new Htrole {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d5423497a3"),
                 Ten = "admin",
                 Code = "admin",
                 MoTa = "ADMIN"
-            }, new HTRole
+            }, new Htrole
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d8123497a3"),
                 Ten = "Nhân viên",
                 Code = "nhanvien",
-                MoTa = "ADMIN"
-            }, new HTRole
+                MoTa = "nhanvien"
+            }, new Htrole
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8"),
                 Ten = "Khách hàng",
@@ -39,7 +39,7 @@ namespace Device_BE.Models.Seed
                 MoTa = "Khách hàng"
             });
             //seed admins
-            modelBuilder.Entity<HTUser>().HasData(new HTUser
+            modelBuilder.Entity<Htuser>().HasData(new Htuser
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3"),
                 Username = "admin",
@@ -50,11 +50,11 @@ namespace Device_BE.Models.Seed
                 Active = true,
                 DiaChi = "Hà Nội",
                 AnhId = null,
-                Sdt = null,
-                GioiThieu = "Hello world Im Iron Man",
+                SoDienThoai = null,
+                //GioiThieu = "Hello world Im Iron Man",
                 TenKhongDau = "nbc",
                 Tuoi = 22
-            }, new HTUser
+            }, new Htuser
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
                 Username = "cuong",
@@ -65,17 +65,17 @@ namespace Device_BE.Models.Seed
                 Active = true,
                 DiaChi = "Hà Nội",
                 AnhId = null,
-                Sdt = null,
+                SoDienThoai = null,
                 GioiThieu = "Xin chào hihi",
                 TenKhongDau = "nbc",
                 Tuoi = 22
             });
             //seed admin into role
-            modelBuilder.Entity<HTUserRole>().HasData(new HTUserRole
+            modelBuilder.Entity<HtuserRole>().HasData(new HtuserRole
             {
                 RoleId = new Guid("9b76ed13-ce77-4d41-0908-08d5423497a3"),
                 UserId = new Guid("9b76ed13-ce77-4d41-0908-08d0223497a3")
-            }, new HTUserRole
+            }, new HtuserRole
             {
                 RoleId = new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8"),
                 UserId = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2")

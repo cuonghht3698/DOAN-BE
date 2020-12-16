@@ -12,23 +12,22 @@ namespace Device_BE.Controllers
     [ApiController]
     public class HTUserController : ControllerBase
     {
-        private readonly DeviceContext _context;
-        public HTUserController(DeviceContext context)
+        private readonly QLPhoneContext _context;
+        public HTUserController(QLPhoneContext context)
         {
             _context = context;
         }
 
-
         [HttpGet("{id}")]
         public ActionResult<MyProfileModel> getProfile(Guid Id)
         {
-            var user = _context.HTUsers.Find(Id);
+            var user = _context.Htuser.Find(Id);
             return Ok(new MyProfileModel { 
                 Id = user.Id,
                 DiaChi = user.DiaChi,
                 Email = user.Email,
                 HoTen = user.HoTen,
-                Sdt = user.Sdt,
+                Sdt = user.SoDienThoai,
                 TenKhongDau = user.TenKhongDau,
                 Tuoi = (int)user.Tuoi,
                 Username = user.Username,

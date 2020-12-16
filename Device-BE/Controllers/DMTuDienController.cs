@@ -1,5 +1,4 @@
 ﻿using Device_BE.Models;
-using Device_BE.Models.MDevice;
 using Device_BE.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,8 @@ namespace Device_BE.Controllers
     [ApiController]
     public class DMTuDienController : ControllerBase
     {
-        private readonly DeviceContext _context;
-        public DMTuDienController(DeviceContext context)
+        private readonly QLPhoneContext _context;
+        public DMTuDienController(QLPhoneContext context)
         {
             _context = context;
         }
@@ -25,11 +24,11 @@ namespace Device_BE.Controllers
         public async Task<ActionResult> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.CMTuDiens.ToListAsync();
+            var data = await _context.CmtuDien.ToListAsync();
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
             var query = from td in data
-                        join ltd in _context.CMLoaiTuDiens on td.LoaiTuDienId equals ltd.Id
+                        join ltd in _context.CmtuDien on td.LoaiTuDienId equals ltd.Id
                         select (td,ltd);
             if (!String.IsNullOrEmpty(search.sSearch))
             {
@@ -47,8 +46,8 @@ namespace Device_BE.Controllers
                 Ten = x.td.Ten,
                 MaTuDien = x.td.MaTuDien,
                 GhiChu = x.td.GhiChu,
-                Active = x.td.Active,
-                UuTien = x.td.UuTien,
+                Active = x.td.Active.Value,
+                UuTien = x.td.UuTien.Value,
                 LoaiTuDien = x.ltd.Ten,
                 LoaiTuDienId = x.ltd.Id
             });
@@ -57,16 +56,16 @@ namespace Device_BE.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(CMTuDien model)
+        public ActionResult Create(CmtuDien model)
         {
             model.Id = new Guid();
-            _context.CMTuDiens.Add(model);
+            _context.CmtuDien.Add(model);
             _context.SaveChanges();
             return NoContent();
         }
 
         [HttpPut]
-        public ActionResult Update(CMTuDien model)
+        public ActionResult Update(CmtuDien model)
         {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
@@ -76,12 +75,12 @@ namespace Device_BE.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var delete = await _context.CMTuDiens.FindAsync(id);
+            var delete = await _context.CmtuDien.FindAsync(id);
             if (delete == null)
             {
                 return Ok("Xóa Không thành công");
             }
-            _context.CMTuDiens.Remove(delete);
+            _context.CmtuDien.Remove(delete);
             await _context.SaveChangesAsync();
             return NoContent();
         }

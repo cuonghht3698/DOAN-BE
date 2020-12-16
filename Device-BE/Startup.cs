@@ -35,11 +35,11 @@ namespace Device_BE
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers();
-            services.AddDbContext<DeviceContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB2")));
+            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB2")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddDefaultIdentity<ApplicationUser>()
-            .AddEntityFrameworkStores<DeviceContext>();
+            .AddEntityFrameworkStores<QLPhoneContext>();
 
             services.Configure<IdentityOptions>(options =>
             {

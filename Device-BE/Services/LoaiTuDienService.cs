@@ -22,14 +22,14 @@ namespace Device_BE.Services
             }
         }
 
-        private readonly DeviceContext _context;
-        public LoaiTuDienService(DeviceContext context)
+        private readonly QLPhoneContext _context;
+        public LoaiTuDienService(QLPhoneContext context)
         {
             _context = context;
         }
         public IEnumerable<LoaiTuDienModel> getPage()
         {
-           var data = _context.CMLoaiTuDiens.ToList();
+           var data = _context.CmloaiTuDien.ToList();
            return data.Select(x => new LoaiTuDienModel
             {
                 Id = x.Id,

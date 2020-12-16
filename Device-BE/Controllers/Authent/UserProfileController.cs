@@ -18,10 +18,10 @@ namespace Device_BE.Controllers
     [Authorize]
     public class UserProfileController : ControllerBase
     {
-        private readonly DeviceContext _context;
+        private readonly QLPhoneContext _context;
 
 
-        public UserProfileController(DeviceContext context)
+        public UserProfileController(QLPhoneContext context)
         {
             _context = context;
 
@@ -34,10 +34,10 @@ namespace Device_BE.Controllers
         public ActionResult GetUserProfile()
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase)).Value;
-            var user = _context.HTUsers.Where(x =>x.Id == new Guid(userId));
+            var user = _context.Htuser.Where(x =>x.Id == new Guid(userId));
             var data = from list in user
-                       join r in _context.HTUserRoles on list.Id equals r.UserId
-                       join r1 in _context.HTRoles on r.RoleId equals r1.Id
+                       join r in _context.HtuserRole on list.Id equals r.UserId
+                       join r1 in _context.Htrole on r.RoleId equals r1.Id
                        select new InfoUserModel
                             {
                                    Id = list.Id,

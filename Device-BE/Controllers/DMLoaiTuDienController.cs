@@ -1,5 +1,4 @@
 ﻿using Device_BE.Models;
-using Device_BE.Models.MDevice;
 using Device_BE.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,8 @@ namespace Device_BE.Controllers
     [ApiController]
     public class DMLoaiTuDienController : ControllerBase
     {
-        private readonly DeviceContext _context;
-        public DMLoaiTuDienController(DeviceContext context)
+        private readonly QLPhoneContext _context;
+        public DMLoaiTuDienController(QLPhoneContext context)
         {
             _context = context;
         }
@@ -24,7 +23,7 @@ namespace Device_BE.Controllers
         [Route("getAll")]
         public ActionResult getAll()
         {
-            var data = _context.CMLoaiTuDiens.ToList();
+            var data = _context.CmloaiTuDien.ToList();
             return Ok(data);
                    
         }
@@ -36,7 +35,7 @@ namespace Device_BE.Controllers
         public async Task<ActionResult> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.CMLoaiTuDiens.ToListAsync();
+            var data = await _context.CmloaiTuDien.ToListAsync();
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
             var query = from ltt in data
@@ -58,16 +57,16 @@ namespace Device_BE.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(CMLoaiTuDien model)
+        public ActionResult Create(CmloaiTuDien model)
         {
-            model.Id = new Guid();
-            _context.CMLoaiTuDiens.Add(model);
+            model.Id = Guid.NewGuid();
+            _context.CmloaiTuDien.Add(model);
             _context.SaveChanges();
             return NoContent();
         }
 
         [HttpPut]
-        public ActionResult Update(CMLoaiTuDien model)
+        public ActionResult Update(CmloaiTuDien model)
         {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
@@ -77,12 +76,12 @@ namespace Device_BE.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var delete = await _context.CMLoaiTuDiens.FindAsync(id);
+            var delete = await _context.CmloaiTuDien.FindAsync(id);
             if (delete == null)
             {
                 return Ok("Xóa Không thành công");
             }
-            _context.CMLoaiTuDiens.Remove(delete);
+            _context.CmloaiTuDien.Remove(delete);
             await _context.SaveChangesAsync();
             return NoContent();
         }
