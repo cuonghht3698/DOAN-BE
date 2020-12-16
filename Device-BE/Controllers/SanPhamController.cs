@@ -11,5 +11,9 @@ namespace Device_BE.Controllers
     [ApiController]
     public class SanPhamController : ControllerBase
     {
+        public void Demo()
+        {
+
+        }
     }
 }
