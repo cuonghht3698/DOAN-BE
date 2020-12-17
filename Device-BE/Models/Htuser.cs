@@ -19,7 +19,7 @@ namespace Device_BE.Models
         public string HoTen { get; set; }
         public string TenKhongDau { get; set; }
         public string DiaChi { get; set; }
-        public int? Tuoi { get; set; }
+        public DateTime? NgaySinh { get; set; }
         public string SoDienThoai { get; set; }
         public string GioiThieu { get; set; }
         public string Email { get; set; }

@@ -43,7 +43,8 @@ namespace Device_BE.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-BJJNCTC;Database=QLPhone;Trusted_Connection=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-3NLG68E\\MSS15;Database=QLPhone;Trusted_Connection=True;");
             }
         }
 
@@ -519,6 +520,8 @@ namespace Device_BE.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.NgaySinh).HasColumnType("datetime");
+
                 entity.Property(e => e.PasswordHash)
                     .IsRequired()
                     .HasMaxLength(200);
@@ -545,7 +548,7 @@ namespace Device_BE.Models
             modelBuilder.Entity<HtuserRole>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.RoleId })
-                    .HasName("PK__HTUserRo__AF2760AD40347494");
+                    .HasName("PK__HTUserRo__AF2760AD852F34D4");
 
                 entity.ToTable("HTUserRole");
 

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Device_BE.Interface;
 using Device_BE.Models;
 using Device_BE.Models.User;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("Register")]
-        //POST : /api/ApplicationUser/Register
+        //POST : /api/authentication/Register
         public ActionResult PostApplicationUser(UserModel model)
         {
             var used = _context.Htuser.ToList().Where(x => x.Username == model.Username);
@@ -47,13 +48,21 @@ namespace WebAPI.Controllers
             try
             {
                  _context.Htuser.Add(applicationUser);
+                 //_context.SaveChanges();
+                var role = new HtuserRole
+                {
+                   
+                    UserId = model.Id,
+                     RoleId = EGuid.RoleKH
+                };
+                 _context.HtuserRole.Add(role);
                  _context.SaveChanges();
                 return Ok(applicationUser);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
 
-                throw ex;
+                throw e;
             }
         }
 

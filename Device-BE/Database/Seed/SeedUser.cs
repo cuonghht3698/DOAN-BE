@@ -53,7 +53,7 @@ namespace Device_BE.Models.Seed
                 SoDienThoai = null,
                 //GioiThieu = "Hello world Im Iron Man",
                 TenKhongDau = "nbc",
-                Tuoi = 22
+                NgaySinh = new DateTime()
             }, new Htuser
             {
                 Id = new Guid("9b76ed13-ce77-4d41-0908-08d0223497b2"),
@@ -68,7 +68,7 @@ namespace Device_BE.Models.Seed
                 SoDienThoai = null,
                 GioiThieu = "Xin chào hihi",
                 TenKhongDau = "nbc",
-                Tuoi = 22
+                NgaySinh = new DateTime()
             });
             //seed admin into role
             modelBuilder.Entity<HtuserRole>().HasData(new HtuserRole

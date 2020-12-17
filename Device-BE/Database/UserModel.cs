@@ -34,9 +34,11 @@ namespace Device_BE.Models
 
         public string TenKhongDau { get; set; }
 
-        public int Tuoi { get; set; }
+        public DateTime NgaySinh { get; set; }
 
         public string GioiThieu { get; set; }
+
+        public string Role { get; set; }
 
     }
 

@@ -35,7 +35,7 @@ namespace Device_BE
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers();
-            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB2")));
+            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddDefaultIdentity<ApplicationUser>()
@@ -72,7 +72,11 @@ namespace Device_BE
                 };
             });
 
-           
+            services.AddControllersWithViews()
+                 .AddNewtonsoftJson(options =>
+                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+  );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +94,7 @@ namespace Device_BE
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseRouting();
