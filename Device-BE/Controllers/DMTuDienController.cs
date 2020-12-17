@@ -26,9 +26,9 @@ namespace Device_BE.Controllers
             ListSelect listData = new ListSelect();
             var data = await _context.CmtuDien.ToListAsync();
             listData.total = data.Count();
-            data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
+            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).ToList();
             var query = from td in data
-                        join ltd in _context.CmtuDien on td.LoaiTuDienId equals ltd.Id
+                        join ltd in _context.CmloaiTuDien on td.LoaiTuDienId equals ltd.Id
                         select (td,ltd);
             if (!String.IsNullOrEmpty(search.sSearch))
             {
@@ -54,11 +54,25 @@ namespace Device_BE.Controllers
             return Ok(listData);
         }
 
+        [HttpGet]
+        [Route("getByLoai")]
+        public ActionResult getAllByIdLoai(string MaTuDien)
+        {
+            var data = _context.CmtuDien.Include(x => x.LoaiTuDien).ToList();
+            if (!String.IsNullOrEmpty(MaTuDien))
+            {
+                data = data.Where(x=> x.LoaiTuDien.MaLoai.Contains(MaTuDien)).ToList();
+
+            }
+
+            return Ok(data);
+        }
+
 
         [HttpPost]
         public ActionResult Create(CmtuDien model)
         {
-            model.Id = new Guid();
+            model.Id = Guid.NewGuid();
             _context.CmtuDien.Add(model);
             _context.SaveChanges();
             return NoContent();

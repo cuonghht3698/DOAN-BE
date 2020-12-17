@@ -10687,19 +10687,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\NBC\\.nuget\\packages\\": {}
+    "C:\\Users\\CUONG\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\NBC\\Desktop\\DOAN\\DOAN-BE\\Device-BE\\Device-BE.csproj",
+      "projectUniqueName": "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj",
       "projectName": "Device-BE",
-      "projectPath": "C:\\Users\\NBC\\Desktop\\DOAN\\DOAN-BE\\Device-BE\\Device-BE.csproj",
-      "packagesPath": "C:\\Users\\NBC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\NBC\\Desktop\\DOAN\\DOAN-BE\\Device-BE\\obj\\",
+      "projectPath": "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj",
+      "packagesPath": "C:\\Users\\CUONG\\.nuget\\packages\\",
+      "outputPath": "E:\\DOAN\\BE\\Device-BE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\NBC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\CUONG\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

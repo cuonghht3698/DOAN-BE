@@ -130,12 +130,12 @@ namespace Device_BE.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete (Guid id)
         {
-            var role = _context.HtuserRole.Where(x =>x.UserId == id).ToList();
-            _context.HtuserRole.Remove(role);
+            var role = _context.HtuserRole.Where(x =>x.UserId == id);
+           _context.HtuserRole.Remove(role.FirstOrDefault());
 
             _context.Htuser.Remove(_context.Htuser.Find(id));
             _context.SaveChanges();
-            return NoContent();
+            return Ok(role);
         }
 
     }

@@ -541,3 +541,6 @@ C:\Users\NBC\Desktop\DOAN\DOAN-BE\Device-BE\obj\Debug\netcoreapp3.1\Device-BE.ge
 C:\Users\NBC\Desktop\DOAN\DOAN-BE\Device-BE\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\NBC\Desktop\DOAN\DOAN-BE\Device-BE\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\NBC\Desktop\DOAN\DOAN-BE\Device-BE\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+E:\DOAN\BE\Device-BE\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+E:\DOAN\BE\Device-BE\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\DOAN\BE\Device-BE\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
