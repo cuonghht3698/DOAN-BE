@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj": {}
+    "C:\\Users\\NBC\\Source\\Repos\\DOAN-BE\\Device-BE\\Device-BE.csproj": {}
   },
   "projects": {
-    "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj": {
+    "C:\\Users\\NBC\\Source\\Repos\\DOAN-BE\\Device-BE\\Device-BE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj",
+        "projectUniqueName": "C:\\Users\\NBC\\Source\\Repos\\DOAN-BE\\Device-BE\\Device-BE.csproj",
         "projectName": "Device-BE",
-        "projectPath": "E:\\DOAN\\BE\\Device-BE\\Device-BE.csproj",
-        "packagesPath": "C:\\Users\\CUONG\\.nuget\\packages\\",
-        "outputPath": "E:\\DOAN\\BE\\Device-BE\\obj\\",
+        "projectPath": "C:\\Users\\NBC\\Source\\Repos\\DOAN-BE\\Device-BE\\Device-BE.csproj",
+        "packagesPath": "C:\\Users\\NBC\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NBC\\Source\\Repos\\DOAN-BE\\Device-BE\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CUONG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\NBC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
