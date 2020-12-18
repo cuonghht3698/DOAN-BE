@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Device_BE.Controllers
 {
-    [Route("api/tinhthanhs")]
+    [Route("api/nhacungcaps")]
     [ApiController]
-    public class DMTinhThanhController : ControllerBase
+    public class NhaCungCapController : ControllerBase
     {
         private readonly QLPhoneContext _context;
-        public DMTinhThanhController(QLPhoneContext context)
+        public NhaCungCapController(QLPhoneContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace Device_BE.Controllers
         [Route("getAll")]
         public ActionResult getAll()
         {
-            var data = _context.DmtinhThanh.ToList();
+            var data = _context.DmnhaCungCap.ToList();
             return Ok(data);
 
         }
@@ -34,7 +34,7 @@ namespace Device_BE.Controllers
         public async Task<ActionResult> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.DmtinhThanh.ToListAsync();
+            var data = await _context.DmnhaCungCap.ToListAsync();
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
             var query = from ltt in data
@@ -45,33 +45,31 @@ namespace Device_BE.Controllers
                 query = query.Where(x => x.Ten.ToLower().Contains(search.sSearch));
             }
 
-            listData.List = query.Select(x => new DmtinhThanh { 
+            listData.List = query.Select(x => new DmnhaCungCap
+            {
                 Id = x.Id,
                 Active = x.Active,
-                IdLoaiTinhThanh = x.IdLoaiTinhThanh,
-                MoTa = x.MoTa,
-                ParentId = x.ParentId,
+                Anh = x.Anh,
+                DiaChi = x.DiaChi,
+                Mota = x.Mota,
+                Sdt = x.Sdt,
                 Ten = x.Ten,
-                UuTien = x.UuTien,
-                Parent = _context.DmtinhThanh.Find(x.ParentId),
-                IdLoaiTinhThanhNavigation = _context.CmtuDien.Find(x.IdLoaiTinhThanh)
-
             });
             return Ok(listData);
         }
 
 
         [HttpPost]
-        public ActionResult Create(DmtinhThanh model)
+        public ActionResult Create(DmnhaCungCap model)
         {
             model.Id = Guid.NewGuid();
-            _context.DmtinhThanh.Add(model);
+            _context.DmnhaCungCap.Add(model);
             _context.SaveChanges();
             return NoContent();
         }
 
         [HttpPut]
-        public ActionResult Update(DmtinhThanh model)
+        public ActionResult Update(DmnhaCungCap model)
         {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
@@ -81,14 +79,14 @@ namespace Device_BE.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid id)
         {
-                var delete = await _context.DmtinhThanh.FindAsync(id);
-                if (delete == null)
-                {
-                    return Ok("Xóa Không thành công");
-                }
-                _context.DmtinhThanh.Remove(delete);
-                await _context.SaveChangesAsync();
-                return NoContent() ;
+            var delete = await _context.DmnhaCungCap.FindAsync(id);
+            if (delete == null)
+            {
+                return Ok("Xóa Không thành công");
+            }
+            _context.DmnhaCungCap.Remove(delete);
+            await _context.SaveChangesAsync();
+            return NoContent();
 
         }
     }

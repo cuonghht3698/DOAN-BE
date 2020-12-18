@@ -56,12 +56,12 @@ namespace Device_BE.Controllers
 
         [HttpGet]
         [Route("getByLoai")]
-        public ActionResult getAllByIdLoai(string MaTuDien)
+        public ActionResult getAllByIdLoai( string MaTuDien)
         {
             var data = _context.CmtuDien.Include(x => x.LoaiTuDien).ToList();
             if (!String.IsNullOrEmpty(MaTuDien))
             {
-                data = data.Where(x=> x.LoaiTuDien.MaLoai.Contains(MaTuDien)).ToList();
+                data = data.Where(x=> x.LoaiTuDien.MaLoai.Equals(MaTuDien)).ToList();
 
             }
 
