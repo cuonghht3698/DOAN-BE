@@ -56,7 +56,7 @@ namespace Device_BE.Controllers
 
         [HttpGet]
         [Route("getByLoai")]
-        public ActionResult getAllByIdLoai( string MaTuDien)
+        public ActionResult getAllByIdLoai(string MaTuDien)
         {
             var data = _context.CmtuDien.Include(x => x.LoaiTuDien).ToList();
             if (!String.IsNullOrEmpty(MaTuDien))
