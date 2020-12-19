@@ -24,14 +24,13 @@ namespace Device_BE.Models
         public decimal? Gia { get; set; }
         public Guid? TrangThaiId { get; set; }
         public Guid? NhaCungCapId { get; set; }
-        public Guid? AnhId { get; set; }
         public Guid? NguoiNhapId { get; set; }
         public Guid? KhoId { get; set; }
         public Guid? LoaiSpid { get; set; }
         public int? KhuyenMai { get; set; }
         public Guid? CauHinhId { get; set; }
+        public bool? Active { get; set; }
 
-        public virtual Dmanh Anh { get; set; }
         public virtual DmcauHinh CauHinh { get; set; }
         public virtual Dmkho Kho { get; set; }
         public virtual CmtuDien LoaiSp { get; set; }

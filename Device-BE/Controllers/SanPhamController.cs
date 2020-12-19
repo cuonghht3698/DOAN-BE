@@ -1,4 +1,5 @@
-﻿using Device_BE.Models;
+﻿using Device_BE.Database;
+using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Func;
 
 namespace Device_BE.Controllers
 {
@@ -34,47 +36,11 @@ namespace Device_BE.Controllers
         public async Task<ActionResult> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.DmsanPham.ToListAsync();
+            var data = await _context.DmsanPham.Include(ch => ch.CauHinh).Include(l => l.LoaiSp)
+                .Include(x => x.TrangThai).Include(x => x.NhaCungCap).Include(x => x.NguoiNhap).Include(x => x.Kho).ToListAsync();
             listData.total = data.Count();
-            data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
-            var query = from ltt in data
-                        join loai in _context.CmtuDien on ltt.LoaiSpid equals loai.Id
-                        join cm in _context.CmtuDien on ltt.TrangThaiId equals cm.Id
-                        join ncc in _context.DmnhaCungCap on ltt.NhaCungCapId equals ncc.Id
-                        join anh in _context.Dmanh on ltt.AnhId equals anh.Id
-
-                        select (ltt, loai, cm , ncc, anh);
-            if (!String.IsNullOrEmpty(search.sSearch))
-            {
-                search.sSearch = search.sSearch.ToLower();
-                query = query.Where(x => x.ltt.Ten.ToLower().Contains(search.sSearch));
-            }
-
-            listData.List = query.Select(x => new DmsanPham
-            {
-                Id = x.ltt.Id,
-                TenNgan = x.ltt.TenNgan,
-                MoTa = x.ltt.MoTa,
-                Rate = x.ltt.Rate,
-                ViewCount = x.ltt.ViewCount,
-                ThoiGianTao = x.ltt.ThoiGianTao,
-                ThoiGianDong = x.ltt.ThoiGianDong,
-                SeriesNumber = x.ltt.SeriesNumber,
-                Color = x.ltt.Color,
-                Gia = x.ltt.Gia,
-                TrangThaiId = x.ltt.TrangThaiId,
-                TrangThai = x.cm,
-                NhaCungCapId = x.ltt.NhaCungCapId,
-                NhaCungCap = x.ncc,
-                AnhId = x.ltt.AnhId,
-                Anh = x.anh,
-                NguoiNhapId = x.ltt.NguoiNhapId,
-                KhoId = x.ltt.KhoId,
-                LoaiSpid = x.ltt.LoaiSpid,
-                KhuyenMai = x.ltt.KhuyenMai,
-                CauHinhId = x.ltt.CauHinhId
-
-            });
+            data = data.Skip((search.pageIndex -1) * search.pageSize).Take(search.pageSize).ToList();
+            listData.List = data;
             return Ok(listData);
         }
 
@@ -87,16 +53,17 @@ namespace Device_BE.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(DmcauHinh model)
+        public ActionResult Create(DmsanPham model)
         {
             model.Id = Guid.NewGuid();
-            _context.DmcauHinh.Add(model);
+            var sanpham = model.CopyAs<DmsanPham>();
+            _context.DmsanPham.Add(sanpham);
             _context.SaveChanges();
             return NoContent();
         }
 
         [HttpPut]
-        public ActionResult Update(DmcauHinh model)
+        public ActionResult Update(DmsanPham model)
         {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();

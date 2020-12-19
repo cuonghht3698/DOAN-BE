@@ -75,6 +75,10 @@ namespace Device_BE.Controllers
         public ActionResult Create(DmcauHinh model)
         {
             model.Id = Guid.NewGuid();
+            if (String.IsNullOrEmpty(model.Mota))
+            {
+                model.Mota = "Cpu: " + model.Cpu +"Ram: "+ model.Ram + "Pin: " + model.Pin + "Màn hình: " + model.ManHinh + ".....";
+            }
             _context.DmcauHinh.Add(model);
             _context.SaveChanges();
             return NoContent();

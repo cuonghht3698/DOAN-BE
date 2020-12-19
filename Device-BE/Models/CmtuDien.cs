@@ -7,7 +7,6 @@ namespace Device_BE.Models
     {
         public CmtuDien()
         {
-            Dmanh = new HashSet<Dmanh>();
             DmcartLoaiGiaoDich = new HashSet<Dmcart>();
             DmcartTrangThai = new HashSet<Dmcart>();
             DmcauHinh = new HashSet<DmcauHinh>();
@@ -28,7 +27,6 @@ namespace Device_BE.Models
         public bool? Active { get; set; }
 
         public virtual CmloaiTuDien LoaiTuDien { get; set; }
-        public virtual ICollection<Dmanh> Dmanh { get; set; }
         public virtual ICollection<Dmcart> DmcartLoaiGiaoDich { get; set; }
         public virtual ICollection<Dmcart> DmcartTrangThai { get; set; }
         public virtual ICollection<DmcauHinh> DmcauHinh { get; set; }

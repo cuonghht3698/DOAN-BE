@@ -27,10 +27,8 @@ namespace Device_BE.Models
         public string PasswordHash { get; set; }
         public DateTime? CreateDate { get; set; }
         public bool? Active { get; set; }
-        public Guid? AnhId { get; set; }
         public Guid? LoaiTaiKhoanId { get; set; }
 
-        public virtual Dmanh Anh { get; set; }
         public virtual CmtuDien LoaiTaiKhoan { get; set; }
         public virtual ICollection<Dmcart> Dmcart { get; set; }
         public virtual ICollection<DmphongBan> DmphongBan { get; set; }

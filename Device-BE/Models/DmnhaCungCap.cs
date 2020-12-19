@@ -15,7 +15,6 @@ namespace Device_BE.Models
         public string DiaChi { get; set; }
         public string Sdt { get; set; }
         public string Mota { get; set; }
-        public string Anh { get; set; }
         public bool? Active { get; set; }
         public DateTime? ThoiGianTao { get; set; }
 

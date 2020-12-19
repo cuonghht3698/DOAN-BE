@@ -43,8 +43,7 @@ namespace Device_BE.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-3NLG68E\\MSS15;Database=QLPhone;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-BJJNCTC;Database=QLPhone;Trusted_Connection=True;");
             }
         }
 
@@ -90,11 +89,6 @@ namespace Device_BE.Models
                 entity.Property(e => e.ImageUrl).HasMaxLength(200);
 
                 entity.Property(e => e.Ten).HasMaxLength(200);
-
-                entity.HasOne(d => d.LoaiAnh)
-                    .WithMany(p => p.Dmanh)
-                    .HasForeignKey(d => d.LoaiAnhId)
-                    .HasConstraintName("FK_DMAnh_LoaiAnhId");
             });
 
             modelBuilder.Entity<DmbaoCao>(entity =>
@@ -261,8 +255,6 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Anh).HasMaxLength(200);
-
                 entity.Property(e => e.DiaChi).HasMaxLength(200);
 
                 entity.Property(e => e.Mota).IsRequired();
@@ -316,11 +308,6 @@ namespace Device_BE.Models
                 entity.Property(e => e.ThoiGianDong).HasColumnType("datetime");
 
                 entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Anh)
-                    .WithMany(p => p.DmsanPham)
-                    .HasForeignKey(d => d.AnhId)
-                    .HasConstraintName("FK_DMSanPham_IdAnh");
 
                 entity.HasOne(d => d.CauHinh)
                     .WithMany(p => p.DmsanPham)
@@ -534,11 +521,6 @@ namespace Device_BE.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.Anh)
-                    .WithMany(p => p.Htuser)
-                    .HasForeignKey(d => d.AnhId)
-                    .HasConstraintName("FK_HTUser_AnhIdh");
-
                 entity.HasOne(d => d.LoaiTaiKhoan)
                     .WithMany(p => p.Htuser)
                     .HasForeignKey(d => d.LoaiTaiKhoanId)
@@ -548,7 +530,7 @@ namespace Device_BE.Models
             modelBuilder.Entity<HtuserRole>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.RoleId })
-                    .HasName("PK__HTUserRo__AF2760AD852F34D4");
+                    .HasName("PK__HTUserRo__AF2760AD088AEB0C");
 
                 entity.ToTable("HTUserRole");
 

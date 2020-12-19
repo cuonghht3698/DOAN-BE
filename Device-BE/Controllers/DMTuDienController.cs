@@ -61,7 +61,7 @@ namespace Device_BE.Controllers
             var data = _context.CmtuDien.Include(x => x.LoaiTuDien).ToList();
             if (!String.IsNullOrEmpty(MaTuDien))
             {
-                data = data.Where(x=> x.LoaiTuDien.MaLoai.Equals(MaTuDien)).ToList();
+                data = data.Where(x=> x.LoaiTuDien.MaLoai == MaTuDien).ToList();
 
             }
 

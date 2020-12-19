@@ -49,7 +49,6 @@ namespace Device_BE.Controllers
             {
                 Id = x.Id,
                 Active = x.Active,
-                Anh = x.Anh,
                 DiaChi = x.DiaChi,
                 Mota = x.Mota,
                 Sdt = x.Sdt,
