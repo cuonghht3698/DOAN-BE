@@ -14,19 +14,17 @@ namespace Device_BE.Database
         public string SeriesNumber { get; set; }
         public string Color { get; set; }
         public decimal? Gia { get; set; }
-        public Guid? TrangThaiId { get; set; }
-        public Guid? NhaCungCapId { get; set; }
-        public Guid? NguoiNhapId { get; set; }
-        public Guid? KhoId { get; set; }
-        public Guid? LoaiSpid { get; set; }
+        public string TrangThai { get; set; }
+        public string NhaCungCap { get; set; }
+        public string NguoiNhap { get; set; }
+        public string Kho { get; set; }
+        public string LoaiSp { get; set; }
         public int? KhuyenMai { get; set; }
-        public Guid? CauHinhId { get; set; }
+        public string CauHinh { get; set; }
         public int? Rate { get; internal set; }
         public int? ViewCount { get; internal set; }
         public DateTime? ThoiGianTao { get; internal set; }
         public DateTime? ThoiGianDong { get; internal set; }
-        public string TrangThai { get; internal set; }
-        public string NhaCungCap { get; internal set; }
         public bool Active { get; set; }
     }
 }

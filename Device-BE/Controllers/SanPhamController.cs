@@ -73,12 +73,12 @@ namespace Device_BE.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var delete = await _context.DmcauHinh.FindAsync(id);
+            var delete = await _context.DmsanPham.FindAsync(id);
             if (delete == null)
             {
                 return Ok("Xóa Không thành công");
             }
-            _context.DmcauHinh.Remove(delete);
+            _context.DmsanPham.Remove(delete);
             await _context.SaveChangesAsync();
             return NoContent();
 
