@@ -10,38 +10,34 @@ using System.Threading.Tasks;
 
 namespace Device_BE.Controllers
 {
-    [Route("api/menu")]
+    [Route("api/rolemenu")]
     [ApiController]
-    public class MenuController : ControllerBase
+    public class RoleMenuController : ControllerBase
     {
         private readonly QLPhoneContext _context;
-        public MenuController(QLPhoneContext context)
+        public RoleMenuController(QLPhoneContext context)
         {
             _context = context;
         }
 
 
-        [HttpPost]
-        [Route("getPage")]
-        public IEnumerable getPage(SearchModel search)
+        [HttpGet]
+        public IEnumerable getPage()
         {
-            var data =  _context.Htmenu.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
-            if(search.sSearch != "")
-            {
-                data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
-            }
+            var data = _context.HtroleMenu.Include(x =>x.Menu).Include(y => y.Role).ToList();
             return data;
         }
         [HttpPost]
-        public ActionResult Post(Htmenu model)
+        public ActionResult Post(HtroleMenu model)
         {
             model.Id = Guid.NewGuid();
-            _context.Htmenu.Add(model);
+            _context.HtroleMenu.Add(model);
             _context.SaveChanges();
             return NoContent();
         }
         [HttpPut]
-        public ActionResult Update(Htmenu model) {
+        public ActionResult Update(HtroleMenu model)
+        {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
@@ -50,12 +46,11 @@ namespace Device_BE.Controllers
         [HttpDelete("{id}")]
         public ActionResult Update(Guid id)
         {
-            var d = _context.Htmenu.Find(id);
-            _context.Htmenu.Remove(d);
+            var d = _context.HtroleMenu.Find(id);
+            _context.HtroleMenu.Remove(d);
             _context.SaveChanges();
             return NoContent();
 
         }
-
     }
 }
