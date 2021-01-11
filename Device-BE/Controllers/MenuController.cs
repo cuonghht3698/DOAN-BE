@@ -20,6 +20,13 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        [Route("getAll")]
+        public IEnumerable getAll()
+        {
+            var data = _context.Htmenu.ToList();
+            return data;
+        }
 
         [HttpPost]
         [Route("getPage")]

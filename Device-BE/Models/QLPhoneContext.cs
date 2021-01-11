@@ -448,11 +448,6 @@ namespace Device_BE.Models
                 entity.Property(e => e.Mota).HasMaxLength(200);
 
                 entity.Property(e => e.Ten).HasMaxLength(200);
-
-                entity.HasOne(d => d.Parent)
-                    .WithMany(p => p.InverseParent)
-                    .HasForeignKey(d => d.ParentId)
-                    .HasConstraintName("FK_HTMenu_ParentId");
             });
 
             modelBuilder.Entity<Htrole>(entity =>
@@ -480,6 +475,11 @@ namespace Device_BE.Models
                     .WithMany(p => p.HtroleMenu)
                     .HasForeignKey(d => d.MenuId)
                     .HasConstraintName("FK_HTRoleMenu_MenuId");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_htrolemenu_parentId");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.HtroleMenu)

@@ -8,7 +8,6 @@ namespace Device_BE.Models
         public Htmenu()
         {
             HtroleMenu = new HashSet<HtroleMenu>();
-            InverseParent = new HashSet<Htmenu>();
         }
 
         public Guid Id { get; set; }
@@ -17,10 +16,8 @@ namespace Device_BE.Models
         public string Controller { get; set; }
         public string Link { get; set; }
         public string Mota { get; set; }
-        public Guid? ParentId { get; set; }
+        public bool? IsParent { get; set; }
 
-        public virtual Htmenu Parent { get; set; }
         public virtual ICollection<HtroleMenu> HtroleMenu { get; set; }
-        public virtual ICollection<Htmenu> InverseParent { get; set; }
     }
 }

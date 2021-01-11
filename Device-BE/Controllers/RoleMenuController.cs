@@ -21,10 +21,10 @@ namespace Device_BE.Controllers
         }
 
 
-        [HttpGet]
-        public IEnumerable getPage()
+        [HttpGet("{id}")]
+        public IEnumerable getRoleMenu(Guid id)
         {
-            var data = _context.HtroleMenu.Include(x =>x.Menu).Include(y => y.Role).ToList();
+            var data = _context.HtroleMenu.Where(x =>x.RoleId == id).Include(x =>x.Menu).ToList();
             return data;
         }
         [HttpPost]
@@ -41,7 +41,6 @@ namespace Device_BE.Controllers
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
-
         }
         [HttpDelete("{id}")]
         public ActionResult Update(Guid id)
