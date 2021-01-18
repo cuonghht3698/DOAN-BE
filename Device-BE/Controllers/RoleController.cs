@@ -20,6 +20,7 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
+ 
 
         [HttpPost]
         [Route("getPage")]
@@ -57,5 +58,7 @@ namespace Device_BE.Controllers
             return NoContent();
 
         }
+
+
     }
 }

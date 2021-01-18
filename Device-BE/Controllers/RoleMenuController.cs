@@ -20,7 +20,13 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
-
+        [HttpGet("{id}")]
+        [Route("getMenu")]
+        public IEnumerable GetMenu(Guid id)
+        {
+            var data = _context.HtuserRole.Where(x => x.UserId == id).ToList();
+            return data;
+        }
         [HttpGet("{id}")]
         public IEnumerable getRoleMenu(Guid id)
         {
