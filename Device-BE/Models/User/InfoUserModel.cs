@@ -13,5 +13,7 @@ namespace Device_BE.Models.User
         public string DiaChi { get; set; }
 
         public string Role { get; set; }
+        public Guid RoleId { get; set; }
+
     }
 }

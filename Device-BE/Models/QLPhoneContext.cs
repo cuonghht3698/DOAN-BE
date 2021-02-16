@@ -17,6 +17,7 @@ namespace Device_BE.Models
 
         public virtual DbSet<CmloaiTuDien> CmloaiTuDien { get; set; }
         public virtual DbSet<CmtuDien> CmtuDien { get; set; }
+        public virtual DbSet<ColorSanPham> ColorSanPham { get; set; }
         public virtual DbSet<Dmanh> Dmanh { get; set; }
         public virtual DbSet<DmbaoCao> DmbaoCao { get; set; }
         public virtual DbSet<Dmcart> Dmcart { get; set; }
@@ -38,12 +39,14 @@ namespace Device_BE.Models
         public virtual DbSet<HtroleMenu> HtroleMenu { get; set; }
         public virtual DbSet<Htuser> Htuser { get; set; }
         public virtual DbSet<HtuserRole> HtuserRole { get; set; }
+        public virtual DbSet<OptionSanPham> OptionSanPham { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-BJJNCTC;Database=QLPhone;Trusted_Connection=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-3LF9ATD;Database=QLPhone;Trusted_Connection=True;");
             }
         }
 
@@ -78,6 +81,20 @@ namespace Device_BE.Models
                     .WithMany(p => p.CmtuDien)
                     .HasForeignKey(d => d.LoaiTuDienId)
                     .HasConstraintName("FK_CMTuDien_LoaiTuDienId");
+            });
+
+            modelBuilder.Entity<ColorSanPham>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Anh).HasMaxLength(300);
+
+                entity.Property(e => e.ChenhGia).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.OptionSanPham)
+                    .WithMany(p => p.ColorSanPham)
+                    .HasForeignKey(d => d.OptionSanPhamId)
+                    .HasConstraintName("fk_ColorSanPham_OptionSanPham");
             });
 
             modelBuilder.Entity<Dmanh>(entity =>
@@ -291,15 +308,9 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Color).HasMaxLength(50);
-
-                entity.Property(e => e.Gia).HasColumnType("decimal(18, 2)");
-
                 entity.Property(e => e.LoaiSpid).HasColumnName("LoaiSPId");
 
                 entity.Property(e => e.MoTa).IsRequired();
-
-                entity.Property(e => e.SeriesNumber).HasMaxLength(50);
 
                 entity.Property(e => e.Ten).HasMaxLength(200);
 
@@ -545,6 +556,22 @@ namespace Device_BE.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_HTRole_UserId");
+            });
+
+            modelBuilder.Entity<OptionSanPham>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Gia).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.NgayHoanThanh).HasColumnType("datetime");
+
+                entity.Property(e => e.NgayTao).HasColumnType("datetime");
+
+                entity.HasOne(d => d.SanPham)
+                    .WithMany(p => p.OptionSanPham)
+                    .HasForeignKey(d => d.SanPhamId)
+                    .HasConstraintName("fk_OptionSanPham_SanPhamId");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -39,11 +39,12 @@ namespace Device_BE.Controllers
                        join r in _context.HtuserRole on list.Id equals r.UserId
                        join r1 in _context.Htrole on r.RoleId equals r1.Id
                        select new InfoUserModel
-                            {
-                                   Id = list.Id,
-                                   HoTen = list.HoTen,
-                                   DiaChi = list.DiaChi,
-                                   Role = r1.Code
+                       {
+                           Id = list.Id,
+                           HoTen = list.HoTen,
+                           DiaChi = list.DiaChi,
+                           Role = r1.Code,
+                           RoleId = r1.Id
                             };
             return Ok(data.ToList());
             

@@ -20,13 +20,13 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
-        [Route("getMenu")]
-        public IEnumerable GetMenu(Guid id)
-        {
-            var data = _context.HtuserRole.Where(x => x.UserId == id).ToList();
-            return data;
-        }
+        //[HttpGet("{id}")]
+        //[Route("getMenu")]
+        //public IEnumerable GetMenu(Guid id)
+        //{
+        //    var data = _context.HtuserRole.Where(x => x.UserId == id).ToList();
+        //    return data;
+        //}
         [HttpGet("{id}")]
         public IEnumerable getRoleMenu(Guid id)
         {
@@ -37,9 +37,16 @@ namespace Device_BE.Controllers
         public ActionResult Post(HtroleMenu model)
         {
             model.Id = Guid.NewGuid();
-            _context.HtroleMenu.Add(model);
-            _context.SaveChanges();
-            return NoContent();
+            var data = _context.HtroleMenu.Where(x => x.RoleId.Equals(model.RoleId)).Where(x => x.MenuId.Equals(model.MenuId)).ToList();
+            if (data.Count == 0)
+            {
+                _context.HtroleMenu.Add(model);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            return BadRequest();
+            
+            
         }
         [HttpPut]
         public ActionResult Update(HtroleMenu model)
