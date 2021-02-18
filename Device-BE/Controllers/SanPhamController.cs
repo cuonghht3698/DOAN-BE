@@ -28,8 +28,14 @@ namespace Device_BE.Controllers
             return Ok(data);
 
         }
-
-
+        //TÌM KIẾM SẢN PHẨM NHẬP HÀNG
+        [HttpGet]
+        [Route("FindNH")]
+        public ActionResult getSP()
+        {
+            var data = _context.DmsanPham.Take(10).ToList();
+            return Ok(data);
+        }
 
         [HttpPost]
         [Route("getPage")]

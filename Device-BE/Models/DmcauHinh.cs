@@ -20,6 +20,8 @@ namespace Device_BE.Models
         public string Dungluong { get; set; }
         public string Mota { get; set; }
         public Guid? LoaiCauHinhId { get; set; }
+        public string Ten { get; set; }
+        public string Code { get; set; }
 
         public virtual CmtuDien LoaiCauHinh { get; set; }
         public virtual ICollection<DmsanPham> DmsanPham { get; set; }

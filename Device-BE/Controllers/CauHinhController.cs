@@ -27,7 +27,14 @@ namespace Device_BE.Controllers
 
         }
 
+        [HttpGet]
+        [Route("getByCode/{code}")]
+        public ActionResult getCode(string code)
+        {
+            var data = _context.DmcauHinh.Where(x =>x.Code.Equals(code)).ToList(); 
+            return Ok(data);
 
+        }
 
         [HttpPost]
         [Route("getPage")]
@@ -49,6 +56,8 @@ namespace Device_BE.Controllers
             listData.List = query.Select(x => new DmcauHinh
             {
                 Id = x.ltt.Id,
+                Ten = x.ltt.Ten,
+                Code = x.ltt.Code,
                 ManHinh = x.ltt.ManHinh,
                 Cpu = x.ltt.Cpu,
                 Pin = x.ltt.Pin,

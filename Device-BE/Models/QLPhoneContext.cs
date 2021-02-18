@@ -182,6 +182,8 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Code).HasMaxLength(50);
+
                 entity.Property(e => e.Cpu)
                     .HasColumnName("CPU")
                     .HasMaxLength(50);
@@ -207,6 +209,8 @@ namespace Device_BE.Models
                 entity.Property(e => e.Ram)
                     .HasColumnName("RAM")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Ten).HasMaxLength(50);
 
                 entity.HasOne(d => d.LoaiCauHinh)
                     .WithMany(p => p.DmcauHinh)
