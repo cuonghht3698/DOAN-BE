@@ -65,7 +65,7 @@ namespace Device_BE.Controllers
             var sanpham = model.CopyAs<DmsanPham>();
             _context.DmsanPham.Add(sanpham);
             _context.SaveChanges();
-            return NoContent();
+            return Ok(model);
         }
 
         [HttpPut]

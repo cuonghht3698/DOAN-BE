@@ -17,7 +17,10 @@ using Device_BE.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Text;
-
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Device_BE
 {
@@ -37,7 +40,11 @@ namespace Device_BE
             services.AddControllers();
             services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB2")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
-
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
             services.AddDefaultIdentity<ApplicationUser>()
             .AddEntityFrameworkStores<QLPhoneContext>();
 
@@ -94,7 +101,12 @@ namespace Device_BE
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseRouting();
