@@ -10,6 +10,7 @@ namespace Device_BE.Models
         public int? SoLuong { get; set; }
         public decimal? ChenhGia { get; set; }
         public string Anh { get; set; }
+        public string Color { get; set; }
 
         public virtual OptionSanPham OptionSanPham { get; set; }
     }

@@ -91,6 +91,8 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.ChenhGia).HasColumnType("decimal(18, 0)");
 
+                entity.Property(e => e.Color).HasMaxLength(50);
+
                 entity.HasOne(d => d.OptionSanPham)
                     .WithMany(p => p.ColorSanPham)
                     .HasForeignKey(d => d.OptionSanPhamId)
@@ -179,6 +181,10 @@ namespace Device_BE.Models
             modelBuilder.Entity<DmcauHinh>(entity =>
             {
                 entity.ToTable("DMCauHinh");
+
+                entity.HasIndex(e => e.Code)
+                    .HasName("UQ__DMCauHin__A25C5AA736E18940")
+                    .IsUnique();
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
@@ -571,6 +577,10 @@ namespace Device_BE.Models
                 entity.Property(e => e.NgayHoanThanh).HasColumnType("datetime");
 
                 entity.Property(e => e.NgayTao).HasColumnType("datetime");
+
+                entity.Property(e => e.Ram).HasMaxLength(30);
+
+                entity.Property(e => e.Rom).HasMaxLength(30);
 
                 entity.HasOne(d => d.SanPham)
                     .WithMany(p => p.OptionSanPham)

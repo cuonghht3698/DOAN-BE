@@ -28,6 +28,7 @@ namespace Device_BE.Models
         public int? KhuyenMai { get; set; }
         public Guid? CauHinhId { get; set; }
         public bool? Active { get; set; }
+        public string ImageUrl { get; set; }
 
         public virtual DmcauHinh CauHinh { get; set; }
         public virtual Dmkho Kho { get; set; }

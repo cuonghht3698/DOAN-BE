@@ -1,4 +1,5 @@
 ﻿using Device_BE.Database;
+using Device_BE.DTO;
 using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,13 +40,12 @@ namespace Device_BE.Controllers
 
         [HttpPost]
         [Route("getPage")]
-        public async Task<ActionResult> getPage(SearchModel search)
+        public async Task<ActionResult<ListSelect>> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.DmsanPham.Include(ch => ch.CauHinh).Include(l => l.LoaiSp)
-                .Include(x => x.TrangThai).Include(x => x.NhaCungCap).Include(x => x.NguoiNhap).Include(x => x.Kho).ToListAsync();
+            var data = await _context.DmsanPham.Include(ch => ch.CauHinh).ToListAsync();
             listData.total = data.Count();
-            data = data.Skip((search.pageIndex -1) * search.pageSize).Take(search.pageSize).ToList();
+            data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
             listData.List = data;
             return Ok(listData);
         }
@@ -57,7 +57,58 @@ namespace Device_BE.Controllers
             var data = _context.DmcauHinh.Where(x => x.LoaiCauHinhId == Id).ToList();
             return Ok(data);
         }
+        [HttpGet]
+        [Route("GetByLoaiMa/{ma}")]
+        public ActionResult GetByLoaiMa(string ma)
+        {
+          // var tudien =  _context.CmtuDien.Where(x => x.MaTuDien.Equals(ma)).ToList();
 
+            var data = _context.OptionSanPham.Where(x => x.SanPham.LoaiSp.MaTuDien == ma).ToList();
+           
+            return Ok(data);
+        }
+        [HttpGet]
+        [Route("getByName")]
+        public ActionResult GetNhapHangSP(string search)
+        {
+            var data = _context.DmsanPham.Include(x => x.CauHinh).ToList();
+            if (!String.IsNullOrEmpty(search))
+            {
+                data = data.Where(x => x.Ten.Contains(search)).ToList();
+            }
+            var list = data.Select(x => new SanPhamDTO
+            {
+                Id = x.Id,
+                Ten = x.Ten,
+                Ram = x.CauHinh.Ram,
+                ManHinh = x.CauHinh.ManHinh,
+                Rom = x.CauHinh.Dungluong,
+                Cpu = x.CauHinh.Cpu,
+                Pin = x.CauHinh.Pin,
+                MoTa = x.MoTa,
+                ImageUrl = x.ImageUrl
+
+            });
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("getOptionById/{Id}")]
+        public ActionResult getOptionById(Guid Id)
+        {
+            var data = _context.OptionSanPham.Where(x => x.SanPhamId == Id).Include(x => x.ColorSanPham).ToList();
+            return Ok(data);
+
+        }
+
+        [HttpGet]
+        [Route("GetNhomMauOptionById/{Id}")]
+        public ActionResult GetNhomMauOptionById(Guid Id)
+        {
+            var data = _context.ColorSanPham.Where(x => x.OptionSanPhamId == Id).ToList();
+            return Ok(data);
+
+        }
         [HttpPost]
         public ActionResult Create(DmsanPham model)
         {
@@ -71,7 +122,17 @@ namespace Device_BE.Controllers
         [HttpPut]
         public ActionResult Update(DmsanPham model)
         {
-            _context.Entry(model).State = EntityState.Modified;
+            //var data = _context.DmsanPham.Find(model.Id);
+            //if (String.IsNullOrEmpty(data.ImageUrl))
+            //{
+            //    //data.ImageUrl = model.ImageUrl;
+            //}
+            //else
+            //{
+            //    data.ImageUrl = model.ImageUrl;
+            //}
+            var update = model.CopyAs<DmsanPham>();
+            _context.Entry(update).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
         }

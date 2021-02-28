@@ -73,7 +73,7 @@ namespace Device_BE.Controllers
         }
 
         [HttpGet]
-        [Route("FindByLoai")]
+        [Route("FindByLoai/{Id}")]
         public ActionResult FindByLoaiCauHinh(Guid Id)
         {
             var data = _context.DmcauHinh.Where(x =>x.LoaiCauHinhId == Id).ToList();

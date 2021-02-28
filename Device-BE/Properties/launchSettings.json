@@ -14,7 +14,9 @@
       "launchUrl": "dmloaitudien",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": false,
+      "nativeDebugging": false
     },
     "Device_BE": {
       "commandName": "Project",

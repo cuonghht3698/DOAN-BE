@@ -30,13 +30,27 @@ namespace Device_BE.Controllers
         [Route("get/{anh}")]
         public ActionResult getAnh(string anh)
         {
-            var dir = Path.Combine("Resources", "Images");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), dir);
-            var path = Path.Combine(pathToSave, anh);
-            //... add content to the stream.
-            return File(System.IO.File.OpenRead(path), "image/*");
-            
-           
+            try
+            {
+            if (anh != "null")
+            {
+                var dir = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), dir);
+                var path = Path.Combine(pathToSave, anh);
+                //... add content to the stream.
+                return File(System.IO.File.OpenRead(path), "image/*");
+            }
+            return NoContent();
+            }
+            catch (Exception)
+            {
+
+                var dir = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), dir);
+                var path = Path.Combine(pathToSave, "emptyImage.png");
+                //... add content to the stream.
+                return File(System.IO.File.OpenRead(path), "image/*");
+            }
         }
         [HttpPost, DisableRequestSizeLimit]
         public IActionResult Upload()

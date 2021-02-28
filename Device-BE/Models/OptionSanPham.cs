@@ -14,8 +14,8 @@ namespace Device_BE.Models
         public Guid? SanPhamId { get; set; }
         public int? SoLuong { get; set; }
         public decimal? Gia { get; set; }
-        public int? Rom { get; set; }
-        public int? Ram { get; set; }
+        public string Rom { get; set; }
+        public string Ram { get; set; }
         public Guid? TrangThai { get; set; }
         public DateTime? NgayTao { get; set; }
         public DateTime? NgayHoanThanh { get; set; }
