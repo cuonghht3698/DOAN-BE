@@ -8,9 +8,16 @@ namespace Device_BE.Database
 {
     public class ViewSanPhamModel
     {
-        public Guid Id { get; set; }
+        public Guid IdSp { get; set; }
         public string Ten { get; set; }
+        public string DungLuong { get; set; }
+        public string ImageUrl { get; set; }
+        public int Rate { get; set; }
+        public decimal? Gia { get; set; }
 
-        public List<OptionSanPham> option { get; set; }
+        public int ViewCount { get; set; }
+
+        public string Hang { get; set; }
+
     }
 }

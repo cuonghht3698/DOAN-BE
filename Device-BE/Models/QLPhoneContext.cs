@@ -318,6 +318,8 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.GiaMacDinh).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.LoaiSpid).HasColumnName("LoaiSPId");
 
                 entity.Property(e => e.MoTa).IsRequired();

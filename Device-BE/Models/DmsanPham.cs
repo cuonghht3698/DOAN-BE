@@ -29,6 +29,7 @@ namespace Device_BE.Models
         public Guid? CauHinhId { get; set; }
         public bool? Active { get; set; }
         public string ImageUrl { get; set; }
+        public decimal GiaMacDinh { get; set; }
 
         public virtual DmcauHinh CauHinh { get; set; }
         public virtual Dmkho Kho { get; set; }

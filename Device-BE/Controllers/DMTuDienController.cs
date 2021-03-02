@@ -65,9 +65,14 @@ namespace Device_BE.Controllers
 
             }
 
-            return Ok(data);
+            return Ok(data.OrderByDescending(x =>x.UuTien).ThenBy(x =>x.MaTuDien));
         }
+        //[HttpGet]
+        //[Route("getByLoaiCoSp")]
+        //public ActionResult getByLoaiCoSp()
+        //{
 
+        //}
 
         [HttpPost]
         public ActionResult Create(CmtuDien model)

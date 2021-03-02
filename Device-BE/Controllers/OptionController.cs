@@ -1,4 +1,6 @@
-﻿using Device_BE.Models;
+﻿using Device_BE.Database;
+using Device_BE.DTO;
+using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,78 @@ namespace Device_BE.Controllers
         {
             _context = context;
         }
+        [HttpPost]
+        [Route("GetPage")]
+        public ActionResult GetPage(ModelSearchSP model)
+        {
+            var data = _context.DmsanPham.Include(x => x.OptionSanPham).ToList();
+            if (!String.IsNullOrEmpty(model.sSearch))
+            {
+                data = data.Where(x => x.Ten.Contains(model.sSearch)).ToList();
+            }
+            data = data.Skip((model.pageIndex -1) * model.pageSize).Take(model.pageSize).ToList();
+            data = model.OrderByAsc ? data.OrderBy(x => x.ViewCount).ToList() : data.OrderByDescending(x => x.ViewCount).ToList();
+            var result = data.Select(x => new 
+            {
+                x.Id,
+                x.Ten,
+                x.MoTa,
+                x.Rate,
+                x.GiaMacDinh,
+                x.ViewCount,
+                x.ImageUrl,
+                ListOption = x.OptionSanPham.Select(y => new { 
+                    y.Id,
+                    y.Ram,
+                    y.Rom,
+                    y.Gia,
+                    y.SoLuong
+                    
+                })
+            });
 
+            return Ok(result);
+            
+        }
+
+
+        [HttpGet]
+        [Route("GetOptionByHang/{MaHang}")]
+        public ActionResult GetOptionByHang(string MaHang)
+        {
+            ListSelect listData = new ListSelect();
+            var data = _context.OptionSanPham.ToList();
+            var query = from o in data
+                        join s in _context.DmsanPham on o.SanPhamId equals s.Id
+                        join ch in _context.DmcauHinh on s.CauHinhId equals ch.Id
+                        join cm in _context.CmtuDien on s.LoaiSpid equals cm.Id
+                        where MaHang == "" || cm.MaTuDien.Equals(MaHang)
+                        group o by new
+                        {
+                            o.SanPhamId,
+                            s.ImageUrl,
+                            s.Ten,
+                            s.Rate,
+                            s.GiaMacDinh,
+                            s.ViewCount,
+                            cm.TenNgan,
+                            ch.Dungluong
+                        } into gcs
+                        select (gcs);
+            listData.total = query.Count();
+            listData.List = query.Select(x => new ViewSanPhamModel
+            {
+                IdSp = x.Key.SanPhamId.Value,
+                Ten = x.Key.Ten,
+                ImageUrl = x.Key.ImageUrl,
+                Rate = x.Key.Rate.Value,
+                ViewCount = x.Key.ViewCount.Value,
+                Hang = x.Key.TenNgan,
+                Gia = x.Key.GiaMacDinh,
+                DungLuong = x.Key.Dungluong
+            });
+            return Ok(listData.List);
+        }
         [HttpPost]
         public ActionResult Insert(OptionSanPham option)
         {
@@ -62,7 +135,7 @@ namespace Device_BE.Controllers
                 return NoContent();
             }
 
-            
+
         }
     }
 }

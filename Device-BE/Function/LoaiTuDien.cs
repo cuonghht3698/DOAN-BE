@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Device_BE.Function
 {
-    public static class GetAnh
+    public static class LoaiTuDien
     {
-      
+        public static string LoaiCauHinh = "LoaiCauHinh";
+
     }
 }
