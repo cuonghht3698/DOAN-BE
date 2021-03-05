@@ -11,6 +11,7 @@ namespace Device_BE.Models
         public string sSearch { get; set; }
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
+        public string? Ma { get; set; }
         public Guid? LoaiTuDienId { get; set; }
     }
 }

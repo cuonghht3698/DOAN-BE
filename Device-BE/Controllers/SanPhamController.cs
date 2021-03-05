@@ -50,6 +50,36 @@ namespace Device_BE.Controllers
             return Ok(listData);
         }
 
+
+        [HttpPost]
+        [Route("showPageDanhMuc")]
+        public async Task<ActionResult<ListSelect>> showPageDanhMuc(SearchModel search)
+        {
+            ListSelect listData = new ListSelect();
+            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).ToListAsync();
+            if (!String.IsNullOrEmpty(search.sSearch))
+            {
+                data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
+            }
+            if (!String.IsNullOrEmpty(search.Ma))
+            {
+                data = data.Where(x => x.LoaiSp.MaTuDien.Equals(search.Ma)).ToList();
+            }
+            listData.total = data.Count();
+            data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
+            listData.List = data.Select(x => new {
+                x.Id,
+                x.Ten,
+                x.GiaMacDinh,
+                x.ImageUrl,
+                x.MoTa,
+                x.Rate,
+                x.ViewCount,
+                x.KhuyenMai
+            });
+            return Ok(listData);
+        }
+
         [HttpGet]
         [Route("FindByLoai")]
         public ActionResult FindByLoaiCauHinh(Guid Id)

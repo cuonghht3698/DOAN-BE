@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Device_BE</RootNamespace>
+    <UserSecretsId>f0984a34-6a3f-4b19-bffc-de4641a77cfc</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BundleTransformer.Core" Version="1.9.213" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.3" />
