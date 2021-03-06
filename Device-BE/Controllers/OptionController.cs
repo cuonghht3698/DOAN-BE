@@ -92,6 +92,35 @@ namespace Device_BE.Controllers
             });
             return Ok(listData.List);
         }
+
+        [HttpGet]
+        [Route("GetOptionByIdSp/{Id}")]
+        public ActionResult GetOptionByIdSp(Guid Id)
+        {
+            var data = _context.DmsanPham.Include(x => x.OptionSanPham).Include(y => y.LoaiSp).Where(x => x.Id == Id).ToList();
+
+            var list = data.Select(x => new
+            {
+                x.Id,
+                x.Ten,
+                x.MoTa,
+                Loaisp = x.LoaiSp.Ten,
+                x.KhuyenMai,
+                x.ImageUrl,
+                x.Rate,
+                x.ViewCount,
+                Option = x.OptionSanPham.Select(y => new
+                {
+                    y.Id,
+                    y.SanPhamId,
+                    y.Ram,
+                    y.Rom,
+                    y.SoLuong,
+                    y.Gia
+                })
+            });
+            return Ok(list);
+        }
         [HttpPost]
         public ActionResult Insert(OptionSanPham option)
         {
