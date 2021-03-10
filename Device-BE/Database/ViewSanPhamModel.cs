@@ -8,7 +8,7 @@ namespace Device_BE.Database
 {
     public class ViewSanPhamModel
     {
-        public Guid IdSp { get; set; }
+        public Guid Id { get; set; }
         public string Ten { get; set; }
         public string DungLuong { get; set; }
         public string ImageUrl { get; set; }

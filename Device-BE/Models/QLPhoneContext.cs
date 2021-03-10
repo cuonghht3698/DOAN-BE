@@ -133,20 +133,23 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Thoigiantao)
-                    .HasColumnName("THOIGIANTAO")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.DiaChi).HasMaxLength(120);
+
+                entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
 
                 entity.Property(e => e.TinNhan).HasMaxLength(50);
 
-                entity.Property(e => e.Tongtien)
-                    .HasColumnName("TONGTIEN")
-                    .HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.TongTien).HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.LoaiGiaoDich)
                     .WithMany(p => p.DmcartLoaiGiaoDich)
                     .HasForeignKey(d => d.LoaiGiaoDichId)
                     .HasConstraintName("FK_DMCart_IdLoaiGD");
+
+                entity.HasOne(d => d.NhanVien)
+                    .WithMany(p => p.DmcartNhanVien)
+                    .HasForeignKey(d => d.NhanVienId)
+                    .HasConstraintName("fk_NhanVienId");
 
                 entity.HasOne(d => d.TrangThai)
                     .WithMany(p => p.DmcartTrangThai)
@@ -154,7 +157,7 @@ namespace Device_BE.Models
                     .HasConstraintName("FK_DMCart_IdTrangThai");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Dmcart)
+                    .WithMany(p => p.DmcartUser)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_DMCart_UserId");
             });
@@ -165,12 +168,22 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Gia).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Mau).HasMaxLength(30);
+
                 entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.DmcartDetail)
                     .HasForeignKey(d => d.CartId)
                     .HasConstraintName("FK_DMCartDetail_CartId");
+
+                entity.HasOne(d => d.Option)
+                    .WithMany(p => p.DmcartDetail)
+                    .HasForeignKey(d => d.OptionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_OptionId");
 
                 entity.HasOne(d => d.SanPham)
                     .WithMany(p => p.DmcartDetail)
@@ -320,6 +333,8 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.GiaMacDinh).HasColumnType("decimal(18, 0)");
 
+                entity.Property(e => e.HangSxid).HasColumnName("HangSXId");
+
                 entity.Property(e => e.LoaiSpid).HasColumnName("LoaiSPId");
 
                 entity.Property(e => e.MoTa).IsRequired();
@@ -336,6 +351,11 @@ namespace Device_BE.Models
                     .WithMany(p => p.DmsanPham)
                     .HasForeignKey(d => d.CauHinhId)
                     .HasConstraintName("FK_DMCauHinh_CauHinhId");
+
+                entity.HasOne(d => d.HangSx)
+                    .WithMany(p => p.DmsanPhamHangSx)
+                    .HasForeignKey(d => d.HangSxid)
+                    .HasConstraintName("fk_HangSXId");
 
                 entity.HasOne(d => d.Kho)
                     .WithMany(p => p.DmsanPham)

@@ -7,7 +7,8 @@ namespace Device_BE.Models
     {
         public Htuser()
         {
-            Dmcart = new HashSet<Dmcart>();
+            DmcartNhanVien = new HashSet<Dmcart>();
+            DmcartUser = new HashSet<Dmcart>();
             DmphongBan = new HashSet<DmphongBan>();
             DmsanPham = new HashSet<DmsanPham>();
             Hscmt = new HashSet<Hscmt>();
@@ -30,7 +31,8 @@ namespace Device_BE.Models
         public Guid? LoaiTaiKhoanId { get; set; }
 
         public virtual CmtuDien LoaiTaiKhoan { get; set; }
-        public virtual ICollection<Dmcart> Dmcart { get; set; }
+        public virtual ICollection<Dmcart> DmcartNhanVien { get; set; }
+        public virtual ICollection<Dmcart> DmcartUser { get; set; }
         public virtual ICollection<DmphongBan> DmphongBan { get; set; }
         public virtual ICollection<DmsanPham> DmsanPham { get; set; }
         public virtual ICollection<Hscmt> Hscmt { get; set; }

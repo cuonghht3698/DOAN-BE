@@ -8,6 +8,7 @@ namespace Device_BE.Models
         public OptionSanPham()
         {
             ColorSanPham = new HashSet<ColorSanPham>();
+            DmcartDetail = new HashSet<DmcartDetail>();
         }
 
         public Guid Id { get; set; }
@@ -22,5 +23,6 @@ namespace Device_BE.Models
 
         public virtual DmsanPham SanPham { get; set; }
         public virtual ICollection<ColorSanPham> ColorSanPham { get; set; }
+        public virtual ICollection<DmcartDetail> DmcartDetail { get; set; }
     }
 }

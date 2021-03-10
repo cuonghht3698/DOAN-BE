@@ -30,8 +30,10 @@ namespace Device_BE.Models
         public bool? Active { get; set; }
         public string ImageUrl { get; set; }
         public decimal GiaMacDinh { get; set; }
+        public Guid? HangSxid { get; set; }
 
         public virtual DmcauHinh CauHinh { get; set; }
+        public virtual CmtuDien HangSx { get; set; }
         public virtual Dmkho Kho { get; set; }
         public virtual CmtuDien LoaiSp { get; set; }
         public virtual Htuser NguoiNhap { get; set; }

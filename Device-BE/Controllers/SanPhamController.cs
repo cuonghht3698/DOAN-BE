@@ -56,14 +56,18 @@ namespace Device_BE.Controllers
         public async Task<ActionResult<ListSelect>> showPageDanhMuc(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).ToListAsync();
+            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.HangSx).ToListAsync();
             if (!String.IsNullOrEmpty(search.sSearch))
             {
                 data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
             }
-            if (!String.IsNullOrEmpty(search.Ma))
+            if (!String.IsNullOrEmpty(search.LoaiSP))
             {
-                data = data.Where(x => x.LoaiSp.MaTuDien.Equals(search.Ma)).ToList();
+                data = data.Where(x => x.LoaiSp.MaTuDien.Equals(search.LoaiSP)).ToList();
+            }
+            if (!String.IsNullOrEmpty(search.HangSX))
+            {
+                data = data.Where(x => x.HangSx.MaTuDien.Equals(search.HangSX)).ToList();
             }
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();

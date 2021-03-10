@@ -64,7 +64,7 @@ namespace Device_BE.Controllers
             var query = from o in data
                         join s in _context.DmsanPham on o.SanPhamId equals s.Id
                         join ch in _context.DmcauHinh on s.CauHinhId equals ch.Id
-                        join cm in _context.CmtuDien on s.LoaiSpid equals cm.Id
+                        join cm in _context.CmtuDien on s.HangSxid equals cm.Id
                         where MaHang == "" || cm.MaTuDien.Equals(MaHang)
                         group o by new
                         {
@@ -81,7 +81,7 @@ namespace Device_BE.Controllers
             listData.total = query.Count();
             listData.List = query.Select(x => new ViewSanPhamModel
             {
-                IdSp = x.Key.SanPhamId.Value,
+                Id = x.Key.SanPhamId.Value,
                 Ten = x.Key.Ten,
                 ImageUrl = x.Key.ImageUrl,
                 Rate = x.Key.Rate.Value,
@@ -108,6 +108,7 @@ namespace Device_BE.Controllers
                 x.KhuyenMai,
                 x.ImageUrl,
                 x.Rate,
+                x.GiaMacDinh,
                 x.ViewCount,
                 Option = x.OptionSanPham.Select(y => new
                 {

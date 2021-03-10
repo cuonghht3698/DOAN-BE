@@ -10,6 +10,7 @@ namespace Device_BE.Models
             DmcartLoaiGiaoDich = new HashSet<Dmcart>();
             DmcartTrangThai = new HashSet<Dmcart>();
             DmcauHinh = new HashSet<DmcauHinh>();
+            DmsanPhamHangSx = new HashSet<DmsanPham>();
             DmsanPhamLoaiSp = new HashSet<DmsanPham>();
             DmsanPhamTrangThai = new HashSet<DmsanPham>();
             DmtinhThanh = new HashSet<DmtinhThanh>();
@@ -30,6 +31,7 @@ namespace Device_BE.Models
         public virtual ICollection<Dmcart> DmcartLoaiGiaoDich { get; set; }
         public virtual ICollection<Dmcart> DmcartTrangThai { get; set; }
         public virtual ICollection<DmcauHinh> DmcauHinh { get; set; }
+        public virtual ICollection<DmsanPham> DmsanPhamHangSx { get; set; }
         public virtual ICollection<DmsanPham> DmsanPhamLoaiSp { get; set; }
         public virtual ICollection<DmsanPham> DmsanPhamTrangThai { get; set; }
         public virtual ICollection<DmtinhThanh> DmtinhThanh { get; set; }
