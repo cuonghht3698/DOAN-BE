@@ -15,6 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\DMAnhController.cs~RF14824a86.TMP" />
+    <None Remove="Controllers\DMAnhController.cs~RFf2d7fdd.TMP" />
+    <None Remove="Controllers\SanPhamController.cs~RF5d590f7.TMP" />
+    <None Remove="Controllers\SanPhamController.cs~RFf946a2.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.3" />
