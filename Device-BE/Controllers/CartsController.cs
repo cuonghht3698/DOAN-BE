@@ -2,6 +2,7 @@
 using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,15 @@ namespace Device_BE.Controllers
             Guid TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
 
             var data = _context.Dmcart.Where(x => x.UserId == UserId && x.TrangThaiId == TrangThaiId);
+            return data;
+        }
+
+        [HttpGet]
+        [Route("ShowShoppingCart/{UserId}")]
+        public IEnumerable<Dmcart> ShowShoppingCart(Guid UserId, string TrangThai)
+        {
+            Guid TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == TrangThai).FirstOrDefault().Id;
+            var data = _context.Dmcart.Include(x => x.DmcartDetail).Where(x => x.UserId == UserId && x.TrangThaiId == TrangThaiId);
             return data;
         }
         [HttpGet]
