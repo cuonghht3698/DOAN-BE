@@ -27,6 +27,8 @@ namespace Device_BE.Controllers
             var data = _context.DmcartDetail.Find(Id);
             yield return data;
         }
+
+
         [HttpPost]
         [Route("CreateNewCartDetail")]
         public ActionResult CreateNewCartDetail(DmcartDetail cart)
@@ -38,8 +40,12 @@ namespace Device_BE.Controllers
              return NoContent();
         }
         [HttpDelete]
+        [Route("{Id}")]
         public ActionResult Delete(Guid Id)
         {
+            var data = _context.DmcartDetail.Find(Id);
+            _context.DmcartDetail.Remove(data);
+            _context.SaveChanges();
             return NoContent();
         }
     }

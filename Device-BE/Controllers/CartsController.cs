@@ -33,11 +33,28 @@ namespace Device_BE.Controllers
 
         [HttpGet]
         [Route("ShowShoppingCart/{UserId}")]
-        public IEnumerable<Dmcart> ShowShoppingCart(Guid UserId, string TrangThai)
+        public ActionResult ShowShoppingCart(Guid UserId)
         {
-            Guid TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == TrangThai).FirstOrDefault().Id;
-            var data = _context.Dmcart.Include(x => x.DmcartDetail).Where(x => x.UserId == UserId && x.TrangThaiId == TrangThaiId);
-            return data;
+            Guid TT = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
+            var data = _context.Dmcart.Where(x => x.TrangThaiId == TT &&  x.UserId == UserId).ToList();
+
+            var query = from d in data
+                       join cd in _context.DmcartDetail on d.Id equals cd.CartId
+                       join sp in _context.DmsanPham on cd.SanPhamId equals sp.Id
+                       join op in _context.OptionSanPham on cd.OptionId equals op.Id
+                        select new { d, cd, sp, op };
+
+            var list = query.Select(x => new { 
+              
+                    IdCartDetail = x.cd.Id,
+                    TenSp = x.sp.Ten,
+                    SoLuong = x.cd.SoLuong,
+                    CauHinh = x.op.Ram + " - "+ x.op.Rom,
+                    Gia = x.cd.Gia,
+                    Anh = x.sp.ImageUrl
+               
+            });
+            return Ok(list);
         }
         [HttpGet]
         [Route("GetCartByUserId/{Id}")]
