@@ -15,6 +15,6 @@ namespace Device_BE.DTO
         public string TrangThai { get; set; }
         public Guid? NhanVienId { get; set; }
         public string DiaChi { get; set; }
-
+        public decimal TongTien { get; set; }
     }
 }

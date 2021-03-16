@@ -36,9 +36,9 @@ namespace Device_BE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers();
-            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Device")));
+            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DeviceDB2")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
             services.Configure<FormOptions>(o => {
                 o.ValueLengthLimit = int.MaxValue;
@@ -102,13 +102,14 @@ namespace Device_BE
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-            //    RequestPath = new PathString("/Resources")
-            //});
-            app.UseHttpsRedirection();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseCors("AllowAll");
+            app.UseHttpsRedirection();
+           
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();

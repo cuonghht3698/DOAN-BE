@@ -76,5 +76,8 @@ namespace Device_BE.Controllers
             _context.SaveChanges();
             yield return data;
         }
+
+
+      
     }
 }

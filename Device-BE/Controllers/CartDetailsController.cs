@@ -48,5 +48,25 @@ namespace Device_BE.Controllers
             _context.SaveChanges();
             return NoContent();
         }
+
+        [HttpPut]
+        public ActionResult Update(DmcartDetail Id)
+        {
+            var data = _context.DmcartDetail.Find(Id);
+            _context.DmcartDetail.Remove(data);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("UpdateSL")]
+        public DmcartDetail UpdateSoLuong([FromBody] Guid Id, int SoLuong)
+        {
+            var data = _context.DmcartDetail.Find(Id);
+            data.SoLuong = SoLuong;
+            _context.DmcartDetail.Update(data);
+            _context.SaveChanges();
+            return data;
+        }
     }
 }
