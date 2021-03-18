@@ -77,7 +77,19 @@ namespace Device_BE.Controllers
             yield return data;
         }
 
-
+        [HttpPost]
+        [Route("ChangTrangThai")]
+        public ActionResult ChangTrangThai(CartModel cart)
+        {
+         
+            var data = cart.CopyAs<Dmcart>();
+            data.NhanVienId = cart.NhanVienId;
+            data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;
+            data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == cart.TrangThai).FirstOrDefault().Id;
+            _context.Entry(data).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
       
     }
 }
