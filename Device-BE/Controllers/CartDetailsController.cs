@@ -58,9 +58,9 @@ namespace Device_BE.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("UpdateSL")]
-        public DmcartDetail UpdateSoLuong([FromBody] Guid Id, int SoLuong)
+        public DmcartDetail UpdateSoLuong(Guid Id, int SoLuong)
         {
             var data = _context.DmcartDetail.Find(Id);
             data.SoLuong = SoLuong;
