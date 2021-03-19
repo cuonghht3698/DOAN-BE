@@ -7,6 +7,10 @@ namespace Device_BE.Interface
 {
     public static class EGuid
     {
-       public static Guid RoleKH = new Guid("9b76ed13-ce77-4d41-0908-08d8223497a8");
+       public static string GiamDoc = "giamdoc";
+        public static string Admin = "admin";
+        public static string NhanVien = "nhanvien";
+        public static string KhachHang = "khachhang";
+
     }
 }

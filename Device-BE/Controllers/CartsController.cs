@@ -56,6 +56,15 @@ namespace Device_BE.Controllers
             });
             return Ok(list);
         }
+
+        [HttpGet]
+        [Route("getPage")]
+        [Obsolete]
+        public ActionResult getPage(Guid UserId,Guid IdTrangThai, int PageIndex, int PageSize)
+        {
+            var data = _context.Database.ExecuteSqlRaw(@"exec GetCart ''");
+            return Ok(data);
+        }
         [HttpGet]
         [Route("GetCartByUserId/{Id}")]
         public IEnumerable<Dmcart> GetCartByUserId(Guid Id)

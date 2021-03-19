@@ -48,12 +48,13 @@ namespace WebAPI.Controllers
             try
             {
                  _context.Htuser.Add(applicationUser);
-                 //_context.SaveChanges();
+
+
                 var role = new HtuserRole
                 {
-                   
+
                     UserId = model.Id,
-                     RoleId = EGuid.RoleKH
+                    RoleId = _context.Htrole.Where(x => x.Code == model.Role).FirstOrDefault().Id
                 };
                  _context.HtuserRole.Add(role);
                  _context.SaveChanges();
