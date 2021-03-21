@@ -22,6 +22,16 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
+
+        [HttpGet]
+        [Route("GetCartId/{Id}")]
+        public Dmcart GetCartId(Guid Id)
+        {
+
+            var data = _context.Dmcart.Where(x => x.Id == Id).Include(x=>x.TrangThai).FirstOrDefault();
+            return data;
+        }
+
         [HttpGet]
         [Route("CheckCart/{UserId}")]
         public IEnumerable<Dmcart> CheckCart(Guid UserId)
@@ -57,7 +67,30 @@ namespace Device_BE.Controllers
             });
             return Ok(list);
         }
+        [HttpGet]
+        [Route("ShowShoppingById")]
+        public ActionResult ShowShoppingCartById(Guid Id)
+        {
+            var data = _context.Dmcart.Where(x => x.Id == Id).ToList();
 
+            var query = from d in data
+                        join cd in _context.DmcartDetail on d.Id equals cd.CartId
+                        join sp in _context.DmsanPham on cd.SanPhamId equals sp.Id
+                        join op in _context.OptionSanPham on cd.OptionId equals op.Id
+                        select new { d, cd, sp, op };
+
+            var list = query.Select(x => new {
+
+                IdCartDetail = x.cd.Id,
+                TenSp = x.sp.Ten,
+                SoLuong = x.cd.SoLuong,
+                CauHinh = x.op.Ram + " - " + x.op.Rom,
+                Gia = x.cd.Gia,
+                Anh = x.sp.ImageUrl
+
+            });
+            return Ok(list);
+        }
         [HttpGet]
         [Route("getPage")]
         [Obsolete]
@@ -86,7 +119,7 @@ namespace Device_BE.Controllers
         }
         [HttpPost]
         [Route("CreateNewCart")]
-        public IEnumerable<Dmcart> CreateNewCart(CartModel cart)
+        public Dmcart CreateNewCart(CartModel cart)
         {
             cart.Id = Guid.NewGuid();
             
@@ -95,7 +128,7 @@ namespace Device_BE.Controllers
             data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == cart.TrangThai).FirstOrDefault().Id;
             _context.Dmcart.Add(data);
             _context.SaveChanges();
-            yield return data;
+            return data;
         }
 
         [HttpPost]
