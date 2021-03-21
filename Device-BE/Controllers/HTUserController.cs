@@ -45,7 +45,7 @@ namespace Device_BE.Controllers
                 DiaChi = x.td.DiaChi,
                 Email = x.td.Email,
                 HoTen = x.td.HoTen,
-                Sdt = x.td.SoDienThoai,
+                SoDienThoai = x.td.SoDienThoai,
                 TenKhongDau = x.td.TenKhongDau,
                 NgaySinh = x.td.NgaySinh.GetValueOrDefault(),
                 Username = x.td.Username,
@@ -65,7 +65,7 @@ namespace Device_BE.Controllers
                 DiaChi = user.DiaChi,
                 Email = user.Email,
                 HoTen = user.HoTen,
-                Sdt = user.SoDienThoai,
+                SoDienThoai = user.SoDienThoai,
                 TenKhongDau = user.TenKhongDau,
                 NgaySinh = (DateTime)user.NgaySinh,
                 Username = user.Username,
@@ -114,14 +114,17 @@ namespace Device_BE.Controllers
         {
             var user = _context.Htuser.Find(model.Id);
             user.HoTen = model.HoTen;
-            user.SoDienThoai = model.Sdt;
-            user.TenKhongDau = model.TenKhongDau;
+            user.SoDienThoai = model.SoDienThoai;
+            user.TenKhongDau = model.HoTen;
             user.NgaySinh = model.NgaySinh;
             user.GioiThieu = model.GioiThieu;
             user.Email = model.Email;
             user.DiaChi = model.DiaChi;
             user.Username = model.Username;
-
+            if (model.Password != "")
+            {
+                user.PasswordHash = PasswordHash.EncodePassword(model.Password);
+            }
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();

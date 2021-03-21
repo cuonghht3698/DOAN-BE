@@ -2,6 +2,7 @@
 using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -67,10 +68,21 @@ namespace Device_BE.Controllers
         }
         [HttpGet]
         [Route("GetCartByUserId/{Id}")]
-        public IEnumerable<Dmcart> GetCartByUserId(Guid Id)
+        public ActionResult GetCartByUserId(Guid Id)
         {
-            var data = _context.Dmcart.Find(Id);
-            yield return data;
+            var data = _context.Dmcart.Where(x => x.UserId == Id).Include(x => x.TrangThai).Include(x => x.NhanVien).ToList();
+            var list = data.Select(x => new
+            {
+                x.ThoiGianTao,
+                x.TinNhan,
+                NhanVien = x.NhanVien!= null ? x.NhanVien.HoTen : "",
+                TenTrangThai =  x.TrangThai.Ten,
+                MaTrangThai = x.TrangThai.MaTuDien,
+                x.TongTien,
+                x.DiaChi,
+                x.Id
+            });
+            return Ok(list);
         }
         [HttpPost]
         [Route("CreateNewCart")]
@@ -99,6 +111,5 @@ namespace Device_BE.Controllers
             _context.SaveChanges();
             return NoContent();
         }
-      
     }
 }
