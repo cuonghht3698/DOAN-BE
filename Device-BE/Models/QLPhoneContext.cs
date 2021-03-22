@@ -135,6 +135,10 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.DiaChi).HasMaxLength(120);
 
+                entity.Property(e => e.NgayHoanThanh).HasColumnType("datetime");
+
+                entity.Property(e => e.Sdt).HasMaxLength(20);
+
                 entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
 
                 entity.Property(e => e.TinNhan).HasMaxLength(50);

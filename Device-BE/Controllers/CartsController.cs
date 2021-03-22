@@ -113,7 +113,8 @@ namespace Device_BE.Controllers
                 MaTrangThai = x.TrangThai.MaTuDien,
                 x.TongTien,
                 x.DiaChi,
-                x.Id
+                x.Id,
+                x.Sdt,
             });
             return Ok(list);
         }

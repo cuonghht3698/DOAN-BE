@@ -19,6 +19,8 @@ namespace Device_BE.Models
         public Guid? TrangThaiId { get; set; }
         public Guid? NhanVienId { get; set; }
         public string DiaChi { get; set; }
+        public string Sdt { get; set; }
+        public DateTime? NgayHoanThanh { get; set; }
 
         public virtual CmtuDien LoaiGiaoDich { get; set; }
         public virtual Htuser NhanVien { get; set; }

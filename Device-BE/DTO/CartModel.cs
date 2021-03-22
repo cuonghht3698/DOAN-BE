@@ -16,5 +16,7 @@ namespace Device_BE.DTO
         public Guid? NhanVienId { get; set; }
         public string DiaChi { get; set; }
         public decimal TongTien { get; set; }
+        public string Sdt { get; set; }
+        public DateTime? NgayHoanThanh { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace Device_BE.Models.User
         public string HoTen { get; set; }
 
         public string DiaChi { get; set; }
+        public string Sdt { get; set; }
 
         public string Role { get; set; }
         public Guid RoleId { get; set; }
