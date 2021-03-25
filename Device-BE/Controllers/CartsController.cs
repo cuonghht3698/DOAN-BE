@@ -28,7 +28,7 @@ namespace Device_BE.Controllers
         public Dmcart GetCartId(Guid Id)
         {
 
-            var data = _context.Dmcart.Where(x => x.Id == Id).Include(x=>x.TrangThai).FirstOrDefault();
+            var data = _context.Dmcart.Where(x => x.Id == Id).Include(x => x.TrangThai).FirstOrDefault();
             return data;
         }
 
@@ -47,23 +47,24 @@ namespace Device_BE.Controllers
         public ActionResult ShowShoppingCart(Guid UserId)
         {
             Guid TT = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
-            var data = _context.Dmcart.Where(x => x.TrangThaiId == TT &&  x.UserId == UserId).ToList();
+            var data = _context.Dmcart.Where(x => x.TrangThaiId == TT && x.UserId == UserId).ToList();
 
             var query = from d in data
-                       join cd in _context.DmcartDetail on d.Id equals cd.CartId
-                       join sp in _context.DmsanPham on cd.SanPhamId equals sp.Id
-                       join op in _context.OptionSanPham on cd.OptionId equals op.Id
+                        join cd in _context.DmcartDetail on d.Id equals cd.CartId
+                        join sp in _context.DmsanPham on cd.SanPhamId equals sp.Id
+                        join op in _context.OptionSanPham on cd.OptionId equals op.Id
                         select new { d, cd, sp, op };
 
-            var list = query.Select(x => new { 
-              
-                    IdCartDetail = x.cd.Id,
-                    TenSp = x.sp.Ten,
-                    SoLuong = x.cd.SoLuong,
-                    CauHinh = x.op.Ram + " - "+ x.op.Rom,
-                    Gia = x.cd.Gia,
-                    Anh = x.sp.ImageUrl
-               
+            var list = query.Select(x => new
+            {
+
+                IdCartDetail = x.cd.Id,
+                TenSp = x.sp.Ten,
+                SoLuong = x.cd.SoLuong,
+                CauHinh = x.op.Ram + " - " + x.op.Rom,
+                Gia = x.cd.Gia,
+                Anh = x.sp.ImageUrl
+
             });
             return Ok(list);
         }
@@ -79,7 +80,8 @@ namespace Device_BE.Controllers
                         join op in _context.OptionSanPham on cd.OptionId equals op.Id
                         select new { d, cd, sp, op };
 
-            var list = query.Select(x => new {
+            var list = query.Select(x => new
+            {
 
                 IdCartDetail = x.cd.Id,
                 TenSp = x.sp.Ten,
@@ -94,9 +96,14 @@ namespace Device_BE.Controllers
         [HttpGet]
         [Route("getPage")]
         [Obsolete]
-        public ActionResult getPage(Guid UserId,Guid IdTrangThai, int PageIndex, int PageSize)
+        public ActionResult getPage(string Search, int PageIndex, int PageSize)
         {
-            var data = _context.Database.ExecuteSqlRaw(@"exec GetCart ''");
+            var data = _context.Dmcart.ToList();
+            if (!String.IsNullOrEmpty(Search))
+            {
+                data = data.Where(x => x.Sdt.Contains(Search)).ToList();
+            }
+            data = data.Skip((PageIndex * PageSize)).Take(PageSize).ToList();
             return Ok(data);
         }
         [HttpGet]
@@ -108,8 +115,8 @@ namespace Device_BE.Controllers
             {
                 x.ThoiGianTao,
                 x.TinNhan,
-                NhanVien = x.NhanVien!= null ? x.NhanVien.HoTen : "",
-                TenTrangThai =  x.TrangThai.Ten,
+                NhanVien = x.NhanVien != null ? x.NhanVien.HoTen : "",
+                TenTrangThai = x.TrangThai.Ten,
                 MaTrangThai = x.TrangThai.MaTuDien,
                 x.TongTien,
                 x.DiaChi,
@@ -123,7 +130,7 @@ namespace Device_BE.Controllers
         public Dmcart CreateNewCart(CartModel cart)
         {
             cart.Id = Guid.NewGuid();
-            
+            cart.ThoiGianTao = DateTime.Now;
             var data = cart.CopyAs<Dmcart>();
             data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;
             data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == cart.TrangThai).FirstOrDefault().Id;
@@ -136,7 +143,7 @@ namespace Device_BE.Controllers
         [Route("ChangTrangThai")]
         public ActionResult ChangTrangThai(CartModel cart)
         {
-         
+
             var data = cart.CopyAs<Dmcart>();
             data.NhanVienId = cart.NhanVienId;
             data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;
