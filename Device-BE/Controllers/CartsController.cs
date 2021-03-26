@@ -93,19 +93,19 @@ namespace Device_BE.Controllers
             });
             return Ok(list);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("getPage")]
-        [Obsolete]
-        public IEnumerable<CartModel> getPage(string Search, int PageIndex, int PageSize)
+        public IEnumerable<CartModel> getPage(SearchModel model)
         {
-            var data = _context.Dmcart.Include(x => x.TrangThai).ToList();
-            if (!String.IsNullOrEmpty(Search))
+            var data = _context.Dmcart.Include(x => x.TrangThai).Where(x => model.TuNgay <= x.ThoiGianTao && x.ThoiGianTao <= model.DenNgay).ToList();
+            if (!String.IsNullOrEmpty(model.sSearch))
             {
-                data = data.Where(x => x.Sdt.Contains(Search)).ToList();
+                data = data.Where(x => x.Sdt.Contains(model.sSearch)).ToList();
             }
-            data = data.Skip((PageIndex * PageSize)).Take(PageSize).ToList();
+            data = data.Skip((model.pageIndex * model.pageSize)).Take(model.pageSize).ToList();
             IEnumerable<CartModel> cart;
-            cart = data.Select(x => {
+            cart = data.Select(x =>
+            {
                 var r = x.CopyAs<CartModel>();
                 r.TrangThai = x.TrangThai.Ten;
                 return r;
@@ -149,7 +149,7 @@ namespace Device_BE.Controllers
         [Route("ChangTrangThai")]
         public ActionResult ChangTrangThai(CartModel cart)
         {
-
+            cart.ThoiGianTao = DateTime.Now;
             var data = cart.CopyAs<Dmcart>();
             data.NhanVienId = cart.NhanVienId;
             data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;

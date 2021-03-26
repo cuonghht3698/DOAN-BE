@@ -24,32 +24,30 @@ namespace Device_BE.Controllers
         public async Task<ActionResult> getPage(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.CmtuDien.ToListAsync();
-            listData.total = data.Count();
-            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).ToList();
-            var query = from td in data
-                        join ltd in _context.CmloaiTuDien on td.LoaiTuDienId equals ltd.Id
-                        select (td,ltd);
+            var data = await _context.CmtuDien.Include(x => x.LoaiTuDien).ToListAsync();
+
             if (!String.IsNullOrEmpty(search.sSearch))
             {
                 search.sSearch = search.sSearch.ToLower();
-                query = query.Where(x => x.td.Ten.ToLower().Contains(search.sSearch));
+                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch)).ToList();
             }
             if (search.LoaiTuDienId != Guid.Empty)
             {
-                query = query.Where(x => x.td.LoaiTuDienId == search.LoaiTuDienId);
+                data = data.Where(x => x.LoaiTuDienId == search.LoaiTuDienId).ToList();
             }
-            listData.List = query.Select(x => new TuDienModel
+            listData.total = data.Count();
+            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).ToList();
+            listData.List = data.Select(x => new TuDienModel
             {
-                Id = x.td.Id,
-                TenNgan = x.td.TenNgan,
-                Ten = x.td.Ten,
-                MaTuDien = x.td.MaTuDien,
-                GhiChu = x.td.GhiChu,
-                Active = x.td.Active.Value,
-                UuTien = x.td.UuTien.Value,
-                LoaiTuDien = x.ltd.Ten,
-                LoaiTuDienId = x.ltd.Id
+                Id = x.Id,
+                TenNgan = x.TenNgan,
+                Ten = x.Ten,
+                MaTuDien = x.MaTuDien,
+                GhiChu = x.GhiChu,
+                Active = x.Active.Value,
+                UuTien = x.UuTien.Value,
+                LoaiTuDien = x.LoaiTuDien.Ten,
+                LoaiTuDienId = x.LoaiTuDien.Id
             });
             return Ok(listData);
         }
@@ -61,11 +59,11 @@ namespace Device_BE.Controllers
             var data = _context.CmtuDien.Include(x => x.LoaiTuDien).ToList();
             if (!String.IsNullOrEmpty(MaTuDien))
             {
-                data = data.Where(x=> x.LoaiTuDien.MaLoai == MaTuDien).ToList();
+                data = data.Where(x => x.LoaiTuDien.MaLoai == MaTuDien).ToList();
 
             }
 
-            return Ok(data.OrderByDescending(x =>x.UuTien).ThenBy(x =>x.MaTuDien));
+            return Ok(data.OrderByDescending(x => x.UuTien).ThenBy(x => x.MaTuDien));
         }
         //[HttpGet]
         //[Route("getByLoaiCoSp")]

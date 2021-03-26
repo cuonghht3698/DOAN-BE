@@ -15,5 +15,10 @@ namespace Device_BE.Models
         public string? HangSX { get; set; }
 
         public Guid? LoaiTuDienId { get; set; }
+
+        public Guid? TrangThaiId { get; set; }
+        public DateTime? TuNgay { get; set; }
+        public DateTime? DenNgay { get; set; }
+
     }
 }
