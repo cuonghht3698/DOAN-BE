@@ -96,15 +96,21 @@ namespace Device_BE.Controllers
         [HttpGet]
         [Route("getPage")]
         [Obsolete]
-        public ActionResult getPage(string Search, int PageIndex, int PageSize)
+        public IEnumerable<CartModel> getPage(string Search, int PageIndex, int PageSize)
         {
-            var data = _context.Dmcart.ToList();
+            var data = _context.Dmcart.Include(x => x.TrangThai).ToList();
             if (!String.IsNullOrEmpty(Search))
             {
                 data = data.Where(x => x.Sdt.Contains(Search)).ToList();
             }
             data = data.Skip((PageIndex * PageSize)).Take(PageSize).ToList();
-            return Ok(data);
+            IEnumerable<CartModel> cart;
+            cart = data.Select(x => {
+                var r = x.CopyAs<CartModel>();
+                r.TrangThai = x.TrangThai.Ten;
+                return r;
+            });
+            return cart;
         }
         [HttpGet]
         [Route("GetCartByUserId/{Id}")]

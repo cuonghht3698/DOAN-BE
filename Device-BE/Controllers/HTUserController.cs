@@ -67,7 +67,7 @@ namespace Device_BE.Controllers
                 HoTen = user.HoTen,
                 SoDienThoai = user.SoDienThoai,
                 TenKhongDau = user.TenKhongDau,
-                NgaySinh = (DateTime)user.NgaySinh,
+                NgaySinh = (DateTime)user.NgaySinh.Value,
                 Username = user.Username,
                 GioiThieu = user.GioiThieu
             });
