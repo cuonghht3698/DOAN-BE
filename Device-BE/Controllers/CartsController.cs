@@ -102,6 +102,10 @@ namespace Device_BE.Controllers
             {
                 data = data.Where(x => x.Sdt.Contains(model.sSearch)).ToList();
             }
+            if (model.TrangThaiId != null)
+            {
+                data = data.Where(x => x.TrangThaiId == model.TrangThaiId).ToList();
+            }
             data = data.Skip((model.pageIndex * model.pageSize)).Take(model.pageSize).ToList();
             IEnumerable<CartModel> cart;
             cart = data.Select(x =>
