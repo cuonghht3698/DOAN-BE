@@ -13,10 +13,17 @@ namespace Device_BE.DTO
         public string LoaiGiaoDich { get; set; }
         public Guid UserId { get; set; }
         public string TrangThai { get; set; }
+        public string MaTrangThai { get; set; }
+
         public Guid? NhanVienId { get; set; }
         public string DiaChi { get; set; }
         public decimal TongTien { get; set; }
         public string Sdt { get; set; }
         public DateTime? NgayHoanThanh { get; set; }
+    }
+    public class GiaoHangModel
+    {
+        public Guid Id { get; set; }
+        public Guid? NhanVienId { get; set; }
     }
 }

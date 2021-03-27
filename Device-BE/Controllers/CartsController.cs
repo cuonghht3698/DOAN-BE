@@ -112,6 +112,7 @@ namespace Device_BE.Controllers
             {
                 var r = x.CopyAs<CartModel>();
                 r.TrangThai = x.TrangThai.Ten;
+                r.MaTrangThai = x.TrangThai.MaTuDien;
                 return r;
             });
             return cart;
@@ -158,6 +159,20 @@ namespace Device_BE.Controllers
             data.NhanVienId = cart.NhanVienId;
             data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;
             data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == cart.TrangThai).FirstOrDefault().Id;
+            _context.Entry(data).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("GiaoHang")]
+        public ActionResult GiaoHang(GiaoHangModel cart)
+        {
+           
+            var data = _context.Dmcart.Find(cart.Id);
+            data.NgayHoanThanh = DateTime.Now;
+            data.NhanVienId = cart.NhanVienId;
+            data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoHang").FirstOrDefault().Id;
             _context.Entry(data).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
