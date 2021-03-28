@@ -88,8 +88,8 @@ namespace Device_BE.Controllers
                 SoLuong = x.cd.SoLuong,
                 CauHinh = x.op.Ram + " - " + x.op.Rom,
                 Gia = x.cd.Gia,
-                Anh = x.sp.ImageUrl
-
+                Anh = x.sp.ImageUrl,
+                IdOption = x.op.Id
             });
             return Ok(list);
         }
@@ -154,7 +154,6 @@ namespace Device_BE.Controllers
         [Route("ChangTrangThai")]
         public ActionResult ChangTrangThai(CartModel cart)
         {
-            cart.ThoiGianTao = DateTime.Now;
             var data = cart.CopyAs<Dmcart>();
             data.NhanVienId = cart.NhanVienId;
             data.LoaiGiaoDichId = _context.CmtuDien.Where(x => x.MaTuDien == cart.LoaiGiaoDich).FirstOrDefault().Id;
@@ -173,6 +172,34 @@ namespace Device_BE.Controllers
             data.NgayHoanThanh = DateTime.Now;
             data.NhanVienId = cart.NhanVienId;
             data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoHang").FirstOrDefault().Id;
+            _context.Entry(data).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("HuyDon")]
+        public ActionResult HuyDon(GiaoHangModel cart)
+        {
+
+            var data = _context.Dmcart.Find(cart.Id);
+            data.NgayHoanThanh = DateTime.Now;
+            data.NhanVienId = cart.NhanVienId;
+            data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DaHuy").FirstOrDefault().Id;
+            _context.Entry(data).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("HoanThanh")]
+        public ActionResult HoanThanh(GiaoHangModel cart)
+        {
+
+            var data = _context.Dmcart.Find(cart.Id);
+            data.NgayHoanThanh = DateTime.Now;
+            data.NhanVienId = cart.NhanVienId;
+            data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DaHoanThanh").FirstOrDefault().Id;
             _context.Entry(data).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();

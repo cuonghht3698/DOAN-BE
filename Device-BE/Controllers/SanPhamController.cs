@@ -125,7 +125,26 @@ namespace Device_BE.Controllers
             });
             return Ok(list);
         }
+        [HttpGet]
+        [Route("getById/{id}")]
+        public ActionResult GetNhapHangSPById(Guid id)
+        {
+            var data = _context.DmsanPham.Where(x => x.Id == id).Include(x => x.CauHinh).ToList();
+            var list = data.Select(x => new SanPhamDTO
+            {
+                Id = x.Id,
+                Ten = x.Ten,
+                Ram = x.CauHinh.Ram,
+                ManHinh = x.CauHinh.ManHinh,
+                Rom = x.CauHinh.Dungluong,
+                Cpu = x.CauHinh.Cpu,
+                Pin = x.CauHinh.Pin,
+                MoTa = x.MoTa,
+                ImageUrl = x.ImageUrl
 
+            });
+            return Ok(list);
+        }
         [HttpGet]
         [Route("getOptionById/{Id}")]
         public ActionResult getOptionById(Guid Id)

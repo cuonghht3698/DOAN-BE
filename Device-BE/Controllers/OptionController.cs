@@ -136,6 +136,35 @@ namespace Device_BE.Controllers
             return Ok(option);
         }
 
+        [HttpPost]
+        [Route("TruSoLuong")]
+        public ActionResult UpdateSoLuong(List<UpdateSoLuong> model)
+        {
+            foreach (var item in model)
+            {
+                var option = _context.OptionSanPham.Find(item.Id);
+                option.SoLuong = option.SoLuong - item.SoLuong;
+                _context.OptionSanPham.Update(option);
+            }
+           
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("CongSoLuong")]
+        public ActionResult CongSoLuong(List<UpdateSoLuong> model)
+        {
+            foreach (var item in model)
+            {
+                var option = _context.OptionSanPham.Find(item.Id);
+                option.SoLuong = option.SoLuong + item.SoLuong;
+                _context.OptionSanPham.Update(option);
+            }
+
+            _context.SaveChanges();
+            return NoContent();
+        }
         [HttpPut]
         public ActionResult Update(OptionSanPham option)
         {
@@ -164,8 +193,6 @@ namespace Device_BE.Controllers
                 _context.SaveChanges();
                 return NoContent();
             }
-
-
         }
     }
 }
