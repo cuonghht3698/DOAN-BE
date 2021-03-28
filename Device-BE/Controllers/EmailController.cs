@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Device_BE.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Device_BE.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/emails")]
     [ApiController]
     public class EmailController : ControllerBase
     {
-        private static readonly string _from = ""; // Email của Sender (của bạn)
-        private static readonly string _pass = ""; // Mật khẩu Email của Sender (của bạn)
-
-        public static string Send(string sendto, string subject, string content)
+        private static readonly string _from = "cuongnb3698@gmail.com"; // Email của Sender (của bạn)
+        private static readonly string _pass = "Cuong3698"; // Mật khẩu Email của Sender (của bạn)
+        [HttpPost]
+        public ActionResult Send(EmailModel model)
         {
             //sendto: Email receiver (người nhận)
             //subject: Tiêu đề email
@@ -27,10 +28,10 @@ namespace Device_BE.Controllers
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                 mail.From = new MailAddress(_from);
-                mail.To.Add(sendto);
-                mail.Subject = subject;
+                mail.To.Add(model.Email);
+                mail.Subject = model.TieuDe;
                 mail.IsBodyHtml = true;
-                mail.Body = content;
+                mail.Body = model.NoiDung;
 
                 mail.Priority = MailPriority.High;
 
@@ -39,11 +40,11 @@ namespace Device_BE.Controllers
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
-                return "OK";
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                return BadRequest();
             }
 
         }

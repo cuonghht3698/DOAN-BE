@@ -45,8 +45,8 @@ namespace Device_BE.Controllers
                            DiaChi = list.DiaChi,
                            Role = r1.Code,
                            RoleId = r1.Id,
-                           Sdt = list.SoDienThoai
-                           
+                           Sdt = list.SoDienThoai,
+                           Email = list.Email
                             };
             return Ok(data.ToList());
             

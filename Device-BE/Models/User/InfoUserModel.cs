@@ -15,6 +15,7 @@ namespace Device_BE.Models.User
 
         public string Role { get; set; }
         public Guid RoleId { get; set; }
+        public string Email { get; set; }
 
     }
 }
