@@ -20,8 +20,31 @@ namespace Device_BE.Controllers
         {
             _context = context;
         }
-       
 
+        [HttpGet]
+        [Route("GetDSTinNhanByTen")]
+        public IEnumerable<TinNhanModel> GetDSTinNhan(string ten)
+        {
+            var data = _context.HstinNhan.Include(x => x.User).Include(x => x.HstraLoiTinNhan).ToList();
+            if (!String.IsNullOrEmpty(ten))
+            {
+                data = data.Where(x => x.User.HoTen.Contains(ten)).ToList();
+            }
+            IEnumerable<TinNhanModel> tinNhans;
+
+            tinNhans = data.Select(x => new TinNhanModel
+            {
+                Id = x.Id,
+                UserId = x.UserId.Value,
+                HoTen = x.User.HoTen,
+                FirstTinNhan = x.HstraLoiTinNhan.Count >0 ? x.HstraLoiTinNhan.OrderByDescending(y => y.ThoiGianTao).FirstOrDefault().NoiDung : "",
+                NgayTao = x.HstraLoiTinNhan.Count > 0 ? x.HstraLoiTinNhan.OrderByDescending(y => y.ThoiGianTao).FirstOrDefault().ThoiGianTao : null,
+                Watch = x.HstraLoiTinNhan.Count > 0 ? x.HstraLoiTinNhan.OrderByDescending(y => y.ThoiGianTao).FirstOrDefault().Watched : null,
+            });
+
+            return tinNhans.OrderByDescending(x => x.NgayTao);
+        }
+       
         [HttpGet]
         [Route("CreateOrGet/{UserId}")]
         public ActionResult CreateOrGet(Guid UserId)

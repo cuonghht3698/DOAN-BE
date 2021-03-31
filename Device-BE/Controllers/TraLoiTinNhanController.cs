@@ -31,7 +31,7 @@ namespace Device_BE.Controllers
                 IdTinNhan = x.IdTinNhan,
                 NoiDung = x.NoiDung,
                 ThoiGianTao = x.ThoiGianTao,
-                Watched = x.Watched
+                Watched = x.Watched 
             });
             return s;
         }
@@ -43,6 +43,20 @@ namespace Device_BE.Controllers
             var tt = model.CopyAs<HstraLoiTinNhan>();
             
             _context.HstraLoiTinNhan.Add(tt);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("Watched/{Id}")]
+        public ActionResult Watched(Guid Id)
+        {
+            var tt = _context.HstraLoiTinNhan.Where(x => x.IdTinNhan == Id).Where(x => x.Watched == false).ToList();
+            foreach (var item in tt)
+            {
+                item.Watched = true;
+                _context.HstraLoiTinNhan.Update(item);
+            }
             _context.SaveChanges();
             return NoContent();
         }
