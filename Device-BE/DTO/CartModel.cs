@@ -20,6 +20,8 @@ namespace Device_BE.DTO
         public decimal TongTien { get; set; }
         public string Sdt { get; set; }
         public DateTime? NgayHoanThanh { get; set; }
+        public string HoTen { get; set; }
+        public string Email { get; set; }
     }
     public class GiaoHangModel
     {

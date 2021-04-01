@@ -21,6 +21,8 @@ namespace Device_BE.Models
         public string DiaChi { get; set; }
         public string Sdt { get; set; }
         public DateTime? NgayHoanThanh { get; set; }
+        public string HoTen { get; set; }
+        public string Email { get; set; }
 
         public virtual CmtuDien LoaiGiaoDich { get; set; }
         public virtual Htuser NhanVien { get; set; }

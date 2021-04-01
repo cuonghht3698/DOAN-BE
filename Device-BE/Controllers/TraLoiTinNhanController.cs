@@ -60,5 +60,26 @@ namespace Device_BE.Controllers
             _context.SaveChanges();
             return NoContent();
         }
+        [HttpDelete("{id}")]
+        public ActionResult Delete(Guid id)
+        {
+            var tt = _context.HstraLoiTinNhan.Find(id);
+            _context.HstraLoiTinNhan.Remove(tt);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("thuhoi/{id}")]
+
+        public ActionResult ThuHoi(Guid id)
+        {
+            var tt = _context.HstraLoiTinNhan.Find(id);
+            tt.NoiDung = "Đã thu hồi";
+            tt.ThoiGianTao = DateTime.Now;
+            _context.HstraLoiTinNhan.Update(tt);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }

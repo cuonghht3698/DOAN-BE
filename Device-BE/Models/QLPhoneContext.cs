@@ -45,7 +45,8 @@ namespace Device_BE.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("workstation id=QLPhone002.mssql.somee.com;packet size=4096;user id=cuongnb98_SQLLogin_1;pwd=z36tqwth74;data source=QLPhone002.mssql.somee.com;persist security info=False;initial catalog=QLPhone002");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-90R2L20;Database=QLPhone;Trusted_Connection=True;");
             }
         }
 
@@ -134,13 +135,17 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.DiaChi).HasMaxLength(120);
 
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.HoTen).HasMaxLength(50);
+
                 entity.Property(e => e.NgayHoanThanh).HasColumnType("datetime");
 
                 entity.Property(e => e.Sdt).HasMaxLength(20);
 
                 entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
 
-                entity.Property(e => e.TinNhan).HasMaxLength(50);
+                entity.Property(e => e.TinNhan).IsRequired();
 
                 entity.Property(e => e.TongTien).HasColumnType("decimal(18, 2)");
 

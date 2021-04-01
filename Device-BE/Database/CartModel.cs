@@ -17,6 +17,8 @@ namespace Device_BE.Database
         public string DiaChi { get; set; }
         public string Sdt { get; set; }
         public DateTime? NgayHoanThanh { get; set; }
+        public string HoTen { get; set; }
+        public string Email { get; set; }
 
 
     }

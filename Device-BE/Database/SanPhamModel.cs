@@ -26,5 +26,6 @@ namespace Device_BE.Database
         public DateTime? ThoiGianTao { get; internal set; }
         public DateTime? ThoiGianDong { get; internal set; }
         public bool Active { get; set; }
+        public string ThongSoKyThuat { get; set; }
     }
 }

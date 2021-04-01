@@ -60,7 +60,8 @@ namespace Device_BE.Controllers
         public ActionResult<MyProfileModel> getProfile(Guid Id)
         {
             var user = _context.Htuser.Find(Id);
-            return Ok(new MyProfileModel { 
+            return Ok(new MyProfileModel
+            {
                 Id = user.Id,
                 DiaChi = user.DiaChi,
                 Email = user.Email,
@@ -69,8 +70,8 @@ namespace Device_BE.Controllers
                 TenKhongDau = user.TenKhongDau,
                 NgaySinh = (DateTime)user.NgaySinh.Value,
                 Username = user.Username,
-                GioiThieu = user.GioiThieu
-            });
+                GioiThieu = user.GioiThieu != null? user.GioiThieu:""
+            }); ;
         }
 
         [HttpPost]

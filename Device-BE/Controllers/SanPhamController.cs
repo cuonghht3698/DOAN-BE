@@ -203,5 +203,42 @@ namespace Device_BE.Controllers
             return NoContent();
 
         }
+
+        [Route("getthongso")]
+        [HttpPost]
+        public ListSelect getthongso(SearchModel model)
+        {
+            ListSelect list = new ListSelect();
+            var data = _context.DmsanPham.Include(x => x.LoaiSp).ToList(); ;
+            if (!String.IsNullOrEmpty(model.sSearch))
+            {
+                data = data.Where(x => x.Ten.ToLower().Contains(model.sSearch.ToLower())).ToList();
+            }
+            if (model.IdLoaiSanPham != null)
+            {
+                data = data.Where(x => x.LoaiSpid == model.IdLoaiSanPham).ToList();
+            }
+            list.total = data.Count;
+            data = data.OrderBy(x => x.ThoiGianTao).Skip(model.pageIndex * model.pageSize).Take(model.pageSize).ToList();
+            list.List = data.Select(x => new { 
+                Id = x.Id,
+                Ten = x.Ten,
+                ThongSoKyThuat = x.ThongSoKyThuat,
+                LoaiSP = x.LoaiSp.Ten
+            });
+            return list;
+        }
+
+        [Route("updatethongso")]
+        [HttpGet]
+        public async Task<ActionResult> UpdateThongSo(Guid id, string ThongSoKyThuat)
+        {
+            var data = await _context.DmsanPham.FindAsync(id);
+            data.ThongSoKyThuat = ThongSoKyThuat;
+            _context.DmsanPham.Update(data);
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+        }
     }
 }

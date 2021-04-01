@@ -31,6 +31,7 @@ namespace Device_BE.Models
         public string ImageUrl { get; set; }
         public decimal GiaMacDinh { get; set; }
         public Guid? HangSxid { get; set; }
+        public string ThongSoKyThuat { get; set; }
 
         public virtual DmcauHinh CauHinh { get; set; }
         public virtual CmtuDien HangSx { get; set; }
