@@ -111,6 +111,7 @@ namespace Device_BE.Controllers
                 x.Rate,
                 x.GiaMacDinh,
                 x.ViewCount,
+                x.ThongSoKyThuat,
                 Option = x.OptionSanPham.Select(y => new
                 {
                     y.Id,

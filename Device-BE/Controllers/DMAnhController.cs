@@ -82,6 +82,8 @@ namespace Device_BE.Controllers
             }
         }
 
+      
+   
 
         [HttpPost]
         [Route("Save")]
