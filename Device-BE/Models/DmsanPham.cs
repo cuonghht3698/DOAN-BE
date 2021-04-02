@@ -7,6 +7,7 @@ namespace Device_BE.Models
     {
         public DmsanPham()
         {
+            Blog = new HashSet<Blog>();
             DmcartDetail = new HashSet<DmcartDetail>();
             Hscmt = new HashSet<Hscmt>();
             OptionSanPham = new HashSet<OptionSanPham>();
@@ -40,6 +41,7 @@ namespace Device_BE.Models
         public virtual Htuser NguoiNhap { get; set; }
         public virtual DmnhaCungCap NhaCungCap { get; set; }
         public virtual CmtuDien TrangThai { get; set; }
+        public virtual ICollection<Blog> Blog { get; set; }
         public virtual ICollection<DmcartDetail> DmcartDetail { get; set; }
         public virtual ICollection<Hscmt> Hscmt { get; set; }
         public virtual ICollection<OptionSanPham> OptionSanPham { get; set; }

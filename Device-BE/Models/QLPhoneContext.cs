@@ -15,6 +15,7 @@ namespace Device_BE.Models
         {
         }
 
+        public virtual DbSet<Blog> Blog { get; set; }
         public virtual DbSet<CmloaiTuDien> CmloaiTuDien { get; set; }
         public virtual DbSet<CmtuDien> CmtuDien { get; set; }
         public virtual DbSet<ColorSanPham> ColorSanPham { get; set; }
@@ -52,6 +53,28 @@ namespace Device_BE.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Blog>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.NoiDung).IsRequired();
+
+                entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
+
+                entity.Property(e => e.TieuDe).HasMaxLength(250);
+
+                entity.Property(e => e.TieuDeKhongDau).HasMaxLength(250);
+
+                entity.HasOne(d => d.IdSanPhamNavigation)
+                    .WithMany(p => p.Blog)
+                    .HasForeignKey(d => d.IdSanPham)
+                    .HasConstraintName("FK_Blog_IdSanPham");
+            });
+
             modelBuilder.Entity<CmloaiTuDien>(entity =>
             {
                 entity.ToTable("CMLoaiTuDien");

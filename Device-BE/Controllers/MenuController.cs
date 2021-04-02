@@ -30,14 +30,18 @@ namespace Device_BE.Controllers
 
         [HttpPost]
         [Route("getPage")]
-        public IEnumerable getPage(SearchModel search)
+        public ListSelect getPage(SearchModel search)
         {
-            var data =  _context.Htmenu.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
+            var data =  _context.Htmenu.ToList();
             if(search.sSearch != "")
             {
-                data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
+                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower())).ToList();
             }
-            return data;
+            ListSelect list = new ListSelect();
+            list.total = data.Count;
+            data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
+            list.List = data;
+            return list;
         }
         [HttpPost]
         public ActionResult Post(Htmenu model)
