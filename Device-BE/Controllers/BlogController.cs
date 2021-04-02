@@ -55,6 +55,15 @@ namespace Device_BE.Controllers
             var data = _context.Blog.Find(Id).CopyAs<Blog>();
             return data;
         }
+
+        [HttpGet]
+        [Route("getByIdSanPham")]
+        public Blog getByIdSanPham(Guid Id)
+        {
+
+            var data = _context.Blog.Where(x => x.IdSanPham == Id).FirstOrDefault().CopyAs<Blog>();
+            return data;
+        }
         [HttpPost]
         public Blog Post(BlogModel blog)
         {
