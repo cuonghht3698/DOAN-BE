@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,26 +22,81 @@ namespace Device_BE.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public IEnumerable getAll()
+        [Route("getAll/{id}")]
+        public ActionResult getAll(Guid id)
         {
-            var data = _context.Htmenu.ToList();
-            return data;
-        }
+            //id là id role
+            var MenuCuaRole = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.RoleId == id).ToList();
 
+
+
+            var list = MenuCuaRole.Select(x => new { 
+                Id = x.Id,
+                Ten = x.Menu.Ten,
+                Icon = x.Menu.Icon,
+                IsParent = x.Menu.IdParent,
+                Link = x.Menu.Link,
+                MoTa = x.Menu.Mota,
+                Controller = x.Menu.Controller,
+                IdParent = x.Menu.IdParent,
+                Cha = x.Menu.IdParent != null? _context.Htmenu.Find(x.Menu.IdParent) : null
+
+            });
+            return Ok(list);
+        }
+        [HttpGet]
+        [Route("getThemRole")]
+        public ActionResult getThemRole()
+        {
+            //id là id role
+            var MenuCuaRole = _context.Htmenu.ToList();
+
+
+
+            var list = MenuCuaRole.Select(x => new {
+                Id = x.Id,
+                Ten = x.Ten,
+                Cha = x.IdParent
+            });
+            return Ok(list);
+        }
+        [HttpGet]
+        [Route("getParent")]
+        public ActionResult getParent()
+        {
+            var data = _context.Htmenu.Where(x => x.IsParent == true).ToList();
+            var list = data.Select(x => new
+            {
+                x.Id,
+                x.Ten
+            });
+            return Ok(list) ;
+        }
         [HttpPost]
         [Route("getPage")]
         public ListSelect getPage(SearchModel search)
         {
-            var data =  _context.Htmenu.ToList();
-            if(search.sSearch != "")
+            var data = _context.Htmenu.ToList();
+            if (search.sSearch != "")
             {
-                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower())).ToList();
+                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower())).OrderBy(x => x.IdParent).ToList();
             }
+           
             ListSelect list = new ListSelect();
             list.total = data.Count;
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
-            list.List = data;
+            list.List = data.Select(x => new {
+                Id = x.Id,
+                Ten = x.Ten,
+                Icon = x.Icon,
+                IsParent = x.IsParent,
+                Link = x.Link,
+                MoTa = x.Mota,
+                Controller = x.Controller,
+                IdParent = x.IdParent,
+                Cha = x.IdParent != null ? _context.Htmenu.Find(x.IdParent).Ten : null
+
+            }).OrderBy(x => x.IdParent);
             return list;
         }
         [HttpPost]
@@ -52,7 +108,8 @@ namespace Device_BE.Controllers
             return NoContent();
         }
         [HttpPut]
-        public ActionResult Update(Htmenu model) {
+        public ActionResult Update(Htmenu model)
+        {
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();

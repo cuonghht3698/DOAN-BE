@@ -17,6 +17,7 @@ namespace Device_BE.Models
         public string Link { get; set; }
         public string Mota { get; set; }
         public bool? IsParent { get; set; }
+        public Guid? IdParent { get; set; }
 
         public virtual ICollection<HtroleMenu> HtroleMenu { get; set; }
     }
