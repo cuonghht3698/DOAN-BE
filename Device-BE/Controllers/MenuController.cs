@@ -46,12 +46,15 @@ namespace Device_BE.Controllers
         }
         [HttpGet]
         [Route("getThemRole")]
-        public ActionResult getThemRole()
+        public ActionResult getThemRole(string search)
         {
             //id là id role
-            var MenuCuaRole = _context.Htmenu.ToList();
+            var MenuCuaRole = _context.Htmenu.OrderBy(x => x.IdParent).ToList();
 
-
+            if (!String.IsNullOrEmpty(search))
+            {
+                MenuCuaRole = MenuCuaRole.Where(x => x.Ten.ToLower().Contains(search.ToLower())).ToList();
+            }
 
             var list = MenuCuaRole.Select(x => new {
                 Id = x.Id,

@@ -50,11 +50,13 @@ namespace Device_BE.Controllers
                 label = x.Menu.Ten,
                 faIcon = x.Menu.Icon,
                 link = x.Menu.Controller + "/" + x.Menu.Link,
-                IdParent = x.Menu.IdParent
+                IdParent = x.Menu.IdParent,
+                MenuId = x.Menu.Id,
+                UuTien = x.UuTien == null?0:x.UuTien.Value
             }).ToList();
-            
+
             IEnumerable<MenuModel> models;
-            models = data.Select(x => new MenuModel
+            models = data.OrderBy(x => x.UuTien).Select(x => new MenuModel
             {
                 Id = x.Id,
                 label = x.Menu.Ten,
@@ -62,7 +64,9 @@ namespace Device_BE.Controllers
                 faIcon = x.Menu.Icon,
                 IsParent = x.Menu.IsParent.Value,
                 link = x.Menu.Link,
-                items = con.Where(y => y.IdParent == x.Menu.Id).ToList()
+                MenuId = x.Menu.Id,
+                UuTien = x.UuTien == null ? 0 : x.UuTien.Value,
+                items = con.OrderBy(x => x.UuTien).Where(y => y.IdParent == x.Menu.Id).ToList()
             });
 
             return models;
@@ -89,11 +93,30 @@ namespace Device_BE.Controllers
             _context.SaveChanges();
             return NoContent();
         }
-        [HttpDelete("{id}")]
-        public ActionResult Update(Guid id)
+        [HttpGet]
+        [Route("UpdateUuTien")]
+        public ActionResult UpdateUuTien(Guid Id, int UuTien)
         {
-            var d = _context.HtroleMenu.Find(id);
-            _context.HtroleMenu.Remove(d);
+            var data = _context.HtroleMenu.Find(Id);
+            data.UuTien = UuTien;
+            _context.HtroleMenu.Update(data);
+            _context.SaveChanges();
+            return NoContent();
+        }
+        [HttpDelete]
+        public ActionResult Update(Guid Id, Guid IdRole)
+        {
+            var checkParent = _context.Htmenu.Find(Id);
+            if (checkParent.IsParent == true)
+            {
+                var getAll = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.Menu.IdParent == Id && x.RoleId == IdRole).ToList();
+                foreach (var item in getAll)
+                {
+                    _context.HtroleMenu.Remove(item);
+                }
+            }
+            //var d = _context.HtroleMenu.Where(x => x.MenuId == Id && x.RoleId == IdRole).FirstOrDefault();
+            //_context.HtroleMenu.Remove(d);
             _context.SaveChanges();
             return NoContent();
 

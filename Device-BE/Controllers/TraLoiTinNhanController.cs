@@ -35,6 +35,25 @@ namespace Device_BE.Controllers
             });
             return s;
         }
+      
+        [HttpGet("{Id}")]
+        [Route("GetByIdUser")]
+        public IEnumerable<TraLoiTinNhanModel> GetByIdUser(Guid Id)
+        {
+            Guid IdUser = _context.HstinNhan.Where(x => x.UserId == Id).FirstOrDefault().Id;
+            var data = _context.HstraLoiTinNhan.Where(x => x.IdTinNhan == IdUser).OrderBy(x => x.ThoiGianTao).ToList();
+            var s = data.Select(x => new TraLoiTinNhanModel
+            {
+
+                Id = x.Id,
+                Active = x.Active,
+                IdTinNhan = x.IdTinNhan,
+                NoiDung = x.NoiDung,
+                ThoiGianTao = x.ThoiGianTao,
+                Watched = x.Watched
+            });
+            return s;
+        }
         [HttpPost]
         public ActionResult PostTinNhan(TraLoiTinNhanModel model)
         {

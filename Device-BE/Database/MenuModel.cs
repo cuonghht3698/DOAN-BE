@@ -14,7 +14,9 @@ namespace Device_BE.Database
         public string link { get; set; }
         public string faIcon { get; set; }
         public bool IsParent { get; set; }
+        public int UuTien { get; set; }
 
+        public Guid MenuId { get; internal set; }
         public List<MenuCon> items { get; set; }
     }
     public class MenuCon
@@ -24,6 +26,9 @@ namespace Device_BE.Database
         public string Controller { get; set; }
         public string link { get; set; }
         public string faIcon { get; set; }
+        public int UuTien { get; set; }
         public Guid? IdParent { get; internal set; }
+        public Guid MenuId { get; internal set; }
+
     }
 }

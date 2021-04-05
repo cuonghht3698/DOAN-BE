@@ -44,7 +44,14 @@ namespace Device_BE.Controllers
 
             return tinNhans.OrderByDescending(x => x.NgayTao);
         }
-       
+        [HttpGet]
+        [HttpGet("GetIdTinNhanByIdUser/{Id}")]
+        public HstinNhan GetIdTinNhanByIdUser(Guid Id)
+        {
+            var data = _context.HstinNhan.Find(Id);
+
+            return data;
+        }
         [HttpGet]
         [Route("CreateOrGet/{UserId}")]
         public ActionResult CreateOrGet(Guid UserId)
