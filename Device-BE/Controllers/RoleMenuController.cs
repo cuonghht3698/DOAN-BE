@@ -115,8 +115,8 @@ namespace Device_BE.Controllers
                     _context.HtroleMenu.Remove(item);
                 }
             }
-            //var d = _context.HtroleMenu.Where(x => x.MenuId == Id && x.RoleId == IdRole).FirstOrDefault();
-            //_context.HtroleMenu.Remove(d);
+            var d = _context.HtroleMenu.Where(x => x.MenuId == Id && x.RoleId == IdRole).FirstOrDefault();
+            _context.HtroleMenu.Remove(d);
             _context.SaveChanges();
             return NoContent();
 

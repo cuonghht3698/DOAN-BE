@@ -113,6 +113,10 @@ namespace Device_BE.Controllers
         [HttpPut]
         public ActionResult Update(Htmenu model)
         {
+            if (model.IsParent == true)
+            {
+                model.IdParent = null;
+            }
             _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
