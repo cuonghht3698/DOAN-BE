@@ -31,7 +31,7 @@ namespace Device_BE.Controllers
                 search.sSearch = search.sSearch.ToLower();
                 data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch)).ToList();
             }
-            if (search.LoaiTuDienId != Guid.Empty)
+            if (search.LoaiTuDienId != null)
             {
                 data = data.Where(x => x.LoaiTuDienId == search.LoaiTuDienId).ToList();
             }
