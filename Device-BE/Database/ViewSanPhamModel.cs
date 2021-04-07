@@ -18,6 +18,11 @@ namespace Device_BE.Database
         public int ViewCount { get; set; }
 
         public string Hang { get; set; }
+        public string Cpu { get; set; }
+        public string Ram { get; set; }
+        public string ManHinh { get; set; }
+
+
 
     }
 }

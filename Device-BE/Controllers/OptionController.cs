@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Func;
@@ -30,9 +31,9 @@ namespace Device_BE.Controllers
             {
                 data = data.Where(x => x.Ten.Contains(model.sSearch)).ToList();
             }
-            data = data.Skip((model.pageIndex -1) * model.pageSize).Take(model.pageSize).ToList();
+            data = data.Skip((model.pageIndex - 1) * model.pageSize).Take(model.pageSize).ToList();
             data = model.OrderByAsc ? data.OrderBy(x => x.ViewCount).ToList() : data.OrderByDescending(x => x.ViewCount).ToList();
-            var result = data.Select(x => new 
+            var result = data.Select(x => new
             {
                 x.Id,
                 x.Ten,
@@ -41,24 +42,37 @@ namespace Device_BE.Controllers
                 x.GiaMacDinh,
                 x.ViewCount,
                 x.ImageUrl,
-                ListOption = x.OptionSanPham.Select(y => new { 
+                ListOption = x.OptionSanPham.Select(y => new
+                {
                     y.Id,
                     y.Ram,
                     y.Rom,
                     y.Gia,
                     y.SoLuong
-                    
+
                 })
             });
 
             return Ok(result);
-            
+
         }
 
+        [HttpGet]
+        [Route("GetTonKho")]
+        public ActionResult GetTonKho()
+        {
+            var ranks = _context.Database.ExecuteSqlCommand("exec get_ton_kho");
+            return Ok(ranks);
+
+
+
+
+
+        }
 
         [HttpGet]
-        [Route("GetOptionByHang/{MaHang}")]
-        public ActionResult GetOptionByHang(string MaHang)
+        [Route("GetOptionByHang")]
+        public ActionResult GetOptionByHang(string MaHang,int PageIndex, int PageSize)
         {
             ListSelect listData = new ListSelect();
             var data = _context.OptionSanPham.ToList();
@@ -76,7 +90,10 @@ namespace Device_BE.Controllers
                             s.GiaMacDinh,
                             s.ViewCount,
                             cm.TenNgan,
-                            ch.Dungluong
+                            ch.Dungluong,
+                            ch.Ram,
+                            ch.ManHinh,
+                            ch.Cpu
                         } into gcs
                         select (gcs);
             listData.total = query.Count();
@@ -89,8 +106,12 @@ namespace Device_BE.Controllers
                 ViewCount = x.Key.ViewCount.Value,
                 Hang = x.Key.TenNgan,
                 Gia = x.Key.GiaMacDinh,
-                DungLuong = x.Key.Dungluong
-            });
+                DungLuong = x.Key.Dungluong,
+                Cpu = x.Key.Cpu,
+                ManHinh = x.Key.ManHinh,
+                Ram = x.Key.Ram
+
+            }).Skip((PageIndex - 1) * PageSize).Take(PageSize);
             return Ok(listData.List);
         }
 
@@ -148,7 +169,7 @@ namespace Device_BE.Controllers
                 option.SoLuong = option.SoLuong - item.SoLuong;
                 _context.OptionSanPham.Update(option);
             }
-           
+
             _context.SaveChanges();
             return NoContent();
         }

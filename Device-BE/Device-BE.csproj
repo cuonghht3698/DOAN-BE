@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Controllers\DMAnhController.cs~RF14824a86.TMP" />
     <None Remove="Controllers\DMAnhController.cs~RFf2d7fdd.TMP" />
+    <None Remove="Controllers\RoleMenuController.cs~RFb6768d5.TMP" />
     <None Remove="Controllers\SanPhamController.cs~RF5d590f7.TMP" />
     <None Remove="Controllers\SanPhamController.cs~RFf946a2.TMP" />
   </ItemGroup>

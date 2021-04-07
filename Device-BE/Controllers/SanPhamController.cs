@@ -56,7 +56,7 @@ namespace Device_BE.Controllers
         public async Task<ActionResult<ListSelect>> showPageDanhMuc(SearchModel search)
         {
             ListSelect listData = new ListSelect();
-            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.HangSx).ToListAsync();
+            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.CauHinh).Include(x => x.HangSx).ToListAsync();
             if (!String.IsNullOrEmpty(search.sSearch))
             {
                 data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
@@ -79,7 +79,11 @@ namespace Device_BE.Controllers
                 x.MoTa,
                 x.Rate,
                 x.ViewCount,
-                x.KhuyenMai
+                x.KhuyenMai,
+                x.CauHinh.Ram,
+                x.CauHinh.ManHinh,
+                x.CauHinh.Dungluong,
+                x.CauHinh.Cpu
             });
             return Ok(listData);
         }

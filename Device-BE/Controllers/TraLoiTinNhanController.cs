@@ -36,8 +36,8 @@ namespace Device_BE.Controllers
             return s;
         }
       
-        [HttpGet("{Id}")]
-        [Route("GetByIdUser")]
+        [HttpGet]
+        [Route("GetByIdUser/{Id}")]
         public IEnumerable<TraLoiTinNhanModel> GetByIdUser(Guid Id)
         {
             Guid IdUser = _context.HstinNhan.Where(x => x.UserId == Id).FirstOrDefault().Id;
