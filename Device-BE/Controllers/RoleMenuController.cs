@@ -104,18 +104,18 @@ namespace Device_BE.Controllers
             return NoContent();
         }
         [HttpDelete]
-        public ActionResult Update(Guid Id, Guid IdRole)
+        public ActionResult Update(Guid Id,Guid MenuId, Guid IdRole)
         {
-            var checkParent = _context.Htmenu.Find(Id);
+            var checkParent = _context.Htmenu.Find(MenuId);
             if (checkParent.IsParent == true)
             {
-                var getAll = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.Menu.IdParent == Id && x.RoleId == IdRole).ToList();
+                var getAll = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.Menu.IdParent == MenuId && x.RoleId == IdRole).ToList();
                 foreach (var item in getAll)
                 {
                     _context.HtroleMenu.Remove(item);
                 }
             }
-            var d = _context.HtroleMenu.Where(x => x.MenuId == Id && x.RoleId == IdRole).FirstOrDefault();
+            var d = _context.HtroleMenu.Find(Id);
             _context.HtroleMenu.Remove(d);
             _context.SaveChanges();
             return NoContent();

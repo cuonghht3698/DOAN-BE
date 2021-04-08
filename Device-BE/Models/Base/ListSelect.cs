@@ -11,4 +11,11 @@ namespace Device_BE.Models
 
         public int total { get; set; }
     }
+
+    public class ListView<T>
+    {
+        public IEnumerable<T> List { get; set; }
+
+        public int total { get; set; }
+    }
 }

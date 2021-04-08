@@ -23,12 +23,12 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public List<CallProc> BaoCao(Dictionary<string, object> param)
-        {
-            CallProcedure<CallProc> call = new CallProcedure<CallProc>(_context);
-            var data = call.BaoCao("bao_cao", param);
-            return data;
-        }
+        //[HttpGet]
+        //public List<CallProc> BaoCao(Dictionary<string, object> param)
+        //{
+        //    CallProcedure<CallProc> call = new CallProcedure<CallProc>(_context);
+        //    var data = call.BaoCao("bao_cao", param);
+        //    return data;
+        //}
     }
 }

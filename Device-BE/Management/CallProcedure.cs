@@ -1,4 +1,5 @@
-﻿using Device_BE.Models;
+﻿using Dapper;
+using Device_BE.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -18,39 +19,29 @@ namespace Device_BE.Management
             _context = context;
         }
 
-        public List<T> BaoCao(string tenProc, Dictionary<string, object> d)
+        public IEnumerable<T> BaoCao(string tenProc, Dictionary<string, object> d, out int total)
         {
             using (var cnn = (_context as DbContext).Database.GetDbConnection())
             {
                 var cmm = cnn.CreateCommand();
-                cmm.CommandType = System.Data.CommandType.StoredProcedure;
-                cmm.CommandText = tenProc;
+                var p = new DynamicParameters();
                 if (d.Count > 0)
                 {
                     foreach (var item in d)
                     {
-                        if (item.Key.StartsWith("Id") && ( item.Value.ToString() == ""))
+                        if (item.Key.StartsWith("Id") && (item.Value.ToString() == ""))
                         {
-                            cmm.Parameters.Add(new SqlParameter(item.Key, Guid.Empty));
+                            p.Add(item.Key, Guid.Empty);
                         }
                         else
-                        cmm.Parameters.Add(new SqlParameter(item.Key, item.Value));
+                            p.Add(item.Key, item.Value);
                     }
 
                 }
-                cmm.Connection = cnn;
-                cnn.Open();
-                var reader = cmm.ExecuteReader();
-                var dataTable = new DataTable();
-                dataTable.Load(reader);
-                List<T> myObjects = new List<T>();
-                if (dataTable.Rows.Count > 0)
-                {
-                    var serializedMyObjects = JsonConvert.SerializeObject(dataTable);
-                    // Here you get the object
-                    myObjects = (List<T>)JsonConvert.DeserializeObject(serializedMyObjects, typeof(List<T>));
-                }
-                return myObjects;
+                p.Add("total", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                var data = cnn.Query<T>(tenProc, p, commandType: CommandType.StoredProcedure);
+                total = p.Get<int>("total");
+                return data;
             }
         }
     }

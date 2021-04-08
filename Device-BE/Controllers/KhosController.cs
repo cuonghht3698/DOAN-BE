@@ -1,4 +1,6 @@
-﻿using Device_BE.Models;
+﻿using Device_BE.DTO;
+using Device_BE.Management;
+using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,30 +21,32 @@ namespace Device_BE.Controllers
             _context = context;
         }
         [HttpPost]
-        [Route("getPage")]
-        public async Task<ActionResult> getPage(SearchModel search)
+        [Route("GetTonKho")]
+        public ListView<TonKhoDAO> GetTonKho(Dictionary<string, object> param)
         {
-            ListSelect listData = new ListSelect();
-            var data = await _context.Dmkho.ToListAsync();
-
-            if (!String.IsNullOrEmpty(search.sSearch))
-            {
-                search.sSearch = search.sSearch.ToLower();
-                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch)).ToList();
-            }
-           
-            listData.total = data.Count();
-            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).ToList();
-            listData.List = data.Select(x => new 
-            {
-                Id = x.Id,
-                Ten = x.Ten,
-                Active = x.Active
-            });
-            return Ok(listData);
+            ListView<TonKhoDAO> view = new ListView<TonKhoDAO>();
+            CallProcedure<TonKhoDAO> call = new CallProcedure<TonKhoDAO>(_context);
+            view.List = call.BaoCao("bao_cao_ton_kho", param , out int total);
+            view.total = total;
+            return view;
         }
 
-     
+
+        [HttpGet]
+        [Route("getPage")]
+        public ListSelect getPage(string Search, int PageIndex, int PageSize)
+            {
+            ListSelect list = new ListSelect();
+            var data = _context.Dmkho.ToList();
+            if (!String.IsNullOrEmpty(Search))
+            {
+                data = data.Where(x => x.Ten.ToLower().Contains(Search)).ToList();
+            }
+            list.total = data.Count;
+            list.List = data.OrderBy(x => x.Ten).Skip((PageIndex) * PageSize).Take(PageSize).ToList();
+            return list;
+        }
+
         [HttpPost]
         public ActionResult Create(Dmkho model)
         {
@@ -55,7 +59,10 @@ namespace Device_BE.Controllers
         [HttpPut]
         public ActionResult Update(Dmkho model)
         {
-            _context.Entry(model).State = EntityState.Modified;
+            var data = _context.Dmkho.Find(model.Id);
+            data.Active = model.Active;
+            data.Ten = model.Ten;
+            _context.Entry(data).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
         }
