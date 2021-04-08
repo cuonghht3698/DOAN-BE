@@ -8,6 +8,9 @@ namespace Device_BE.DTO
 {
     public class CallProc
     {
+        public Guid Id { get; set; }
+        public string Ten { get; set; }
+
 
     }
 }

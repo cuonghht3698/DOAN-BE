@@ -47,5 +47,9 @@
     <PackageReference Include="Paket.Core" Version="5.257.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 
 </Project>
