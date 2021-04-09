@@ -1,6 +1,7 @@
 ﻿using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Device_BE.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -83,14 +84,22 @@ namespace Device_BE.Controllers
         [HttpPost]
         public ActionResult Create(DmcauHinh model)
         {
-            model.Id = Guid.NewGuid();
-            if (String.IsNullOrEmpty(model.Mota))
+            try
             {
-                model.Mota = "Cpu: " + model.Cpu +"Ram: "+ model.Ram + "Pin: " + model.Pin + "Màn hình: " + model.ManHinh + ".....";
+                model.Id = Guid.NewGuid();
+                if (String.IsNullOrEmpty(model.Mota))
+                {
+                    model.Mota = "Cpu: " + model.Cpu + "Ram: " + model.Ram + "Pin: " + model.Pin + "Màn hình: " + model.ManHinh;
+                }
+                _context.DmcauHinh.Add(model);
+                _context.SaveChanges();
+                return NoContent();
             }
-            _context.DmcauHinh.Add(model);
-            _context.SaveChanges();
-            return NoContent();
+            catch (Exception)
+            {
+
+                throw new Exception("Mã code đã tồn tại");
+            }
         }
 
         [HttpPut]
