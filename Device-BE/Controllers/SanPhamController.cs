@@ -55,6 +55,14 @@ namespace Device_BE.Controllers
         [Route("showPageDanhMuc")]
         public async Task<ActionResult<ListSelect>> showPageDanhMuc(SearchModel search)
         {
+            if (search.GiaTu == null)
+            {
+                search.GiaTu = 0;
+            }
+            if (search.GiaDen == null)
+            {
+                search.GiaDen = 0;
+            }
             ListSelect listData = new ListSelect();
             var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.CauHinh).Include(x => x.HangSx).ToListAsync();
             if (!String.IsNullOrEmpty(search.sSearch))
@@ -68,6 +76,18 @@ namespace Device_BE.Controllers
             if (!String.IsNullOrEmpty(search.HangSX))
             {
                 data = data.Where(x => x.HangSx.MaTuDien.Equals(search.HangSX)).ToList();
+            }
+            if (search.GiaTu != 0 && search.GiaDen != 0)
+            {
+                data = data.Where(x => x.GiaMacDinh >= search.GiaTu && x.GiaMacDinh <= search.GiaDen).ToList();
+            }
+            if (!String.IsNullOrEmpty(search.Ram))
+            {
+                data = data.Where(x => x.CauHinh.Ram.Contains(search.Ram)).ToList();
+            }
+            if (!String.IsNullOrEmpty(search.DungLuong))
+            {
+                data = data.Where(x => x.CauHinh.Dungluong.Contains(search.DungLuong)).ToList();
             }
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();

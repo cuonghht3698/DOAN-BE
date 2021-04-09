@@ -10,7 +10,7 @@ namespace Device_BE.DTO
         public int STT { get; set; }
         public Guid Id { get; set; }
         public string Ten { get; set; }
-        public int SLTon { get; set; }
+        public int TonKho { get; set; }
         public string Kho { get; set; }
 
     }

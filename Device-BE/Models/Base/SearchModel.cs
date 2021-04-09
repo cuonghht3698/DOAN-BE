@@ -14,6 +14,12 @@ namespace Device_BE.Models
         public string? LoaiSP { get; set; }
         public string? HangSX { get; set; }
 
+        public decimal? GiaTu { get; set; }
+        public decimal? GiaDen { get; set; }
+
+        public string Ram { get; set; }
+        public string DungLuong { get; set; }
+
         public Guid? LoaiTuDienId { get; set; }
         public Guid? IdLoaiSanPham { get; set; }
         public Guid? IdSanPham { get; set; }

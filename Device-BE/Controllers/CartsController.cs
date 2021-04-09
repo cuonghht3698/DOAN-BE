@@ -106,7 +106,7 @@ namespace Device_BE.Controllers
             {
                 data = data.Where(x => x.TrangThaiId == model.TrangThaiId).ToList();
             }
-            data = data.Skip((model.pageIndex * model.pageSize)).Take(model.pageSize).ToList();
+            data = data.Skip((model.pageIndex * model.pageSize)).Take(model.pageSize).OrderByDescending(x => x.TrangThaiId).ToList();
             IEnumerable<CartModel> cart;
             cart = data.Select(x =>
             {

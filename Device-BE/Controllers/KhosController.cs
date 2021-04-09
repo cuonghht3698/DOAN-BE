@@ -46,7 +46,17 @@ namespace Device_BE.Controllers
             list.List = data.OrderBy(x => x.Ten).Skip((PageIndex) * PageSize).Take(PageSize).ToList();
             return list;
         }
-
+        [HttpGet]
+        [Route("getAllKho")]
+        public ActionResult getAllKho()
+        {
+            var data = _context.Dmkho.ToList();
+            return Ok(data.Select(x => new
+            {
+                Id = x.Id,
+                Ten = x.Ten
+            }));
+        }
         [HttpPost]
         public ActionResult Create(Dmkho model)
         {
