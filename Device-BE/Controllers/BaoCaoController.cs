@@ -23,12 +23,24 @@ namespace Device_BE.Controllers
             _context = context;
         }
 
-        //[HttpGet]
-        //public List<CallProc> BaoCao(Dictionary<string, object> param)
-        //{
-        //    CallProcedure<CallProc> call = new CallProcedure<CallProc>(_context);
-        //    var data = call.BaoCao("bao_cao", param);
-        //    return data;
-        //}
+        [HttpPost]
+        [Route("BaoCaoTheoThang")]
+        public IEnumerable<BaoCaoTongHopModel> BaoCaoTheoThang(Dictionary<string, object> param)
+        {
+            IEnumerable<BaoCaoTongHopModel> view;
+            CallProcedure<BaoCaoTongHopModel> call = new CallProcedure<BaoCaoTongHopModel>(_context);
+            view = call.BaoCao("bao_cao_doanh_thu_theo_nam", param);
+            return view;
+        }
+
+        [HttpPost]
+        [Route("TongHopTrangThaiDonHang")]
+        public IEnumerable<TongHopTrangThaiDonHangDAO> TongHopTrangThaiDonHang(Dictionary<string, object> param)
+        {
+            IEnumerable<TongHopTrangThaiDonHangDAO> view;
+            CallProcedure<TongHopTrangThaiDonHangDAO> call = new CallProcedure<TongHopTrangThaiDonHangDAO>(_context);
+            view = call.BaoCao("tong_hop_trang_thai_don_hang", param);
+            return view;
+        }
     }
 }

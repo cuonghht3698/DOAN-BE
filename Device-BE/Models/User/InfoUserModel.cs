@@ -17,5 +17,7 @@ namespace Device_BE.Models.User
         public Guid RoleId { get; set; }
         public string Email { get; set; }
 
+        public bool checkChuaDangNhap { get; set; }
+
     }
 }

@@ -26,7 +26,7 @@ namespace Device_BE.Controllers
         {
             ListView<TonKhoDAO> view = new ListView<TonKhoDAO>();
             CallProcedure<TonKhoDAO> call = new CallProcedure<TonKhoDAO>(_context);
-            view.List = call.BaoCao("bao_cao_ton_kho", param , out int total);
+            view.List = call.BaoCaoCoOutPut("bao_cao_ton_kho", param , out int total);
             view.total = total;
             return view;
         }

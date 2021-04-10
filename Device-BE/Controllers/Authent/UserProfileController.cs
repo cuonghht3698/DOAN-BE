@@ -35,6 +35,12 @@ namespace Device_BE.Controllers
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase)).Value;
             var user = _context.Htuser.Where(x =>x.Id == new Guid(userId));
+            bool checkChuaDangNhap = false;
+            // ussername là tài khoản mặc định khi chưa đăng nhập
+            if (user.FirstOrDefault().Username == "khachhang")
+            {
+                checkChuaDangNhap = true;
+            }
             var data = from list in user
                        join r in _context.HtuserRole on list.Id equals r.UserId
                        join r1 in _context.Htrole on r.RoleId equals r1.Id
@@ -46,8 +52,9 @@ namespace Device_BE.Controllers
                            Role = r1.Code,
                            RoleId = r1.Id,
                            Sdt = list.SoDienThoai,
-                           Email = list.Email
-                            };
+                           Email = list.Email,
+                           checkChuaDangNhap = checkChuaDangNhap
+                       };
             return Ok(data.ToList());
             
         }

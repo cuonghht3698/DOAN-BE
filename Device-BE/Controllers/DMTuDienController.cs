@@ -36,7 +36,7 @@ namespace Device_BE.Controllers
                 data = data.Where(x => x.LoaiTuDienId == search.LoaiTuDienId).ToList();
             }
             listData.total = data.Count();
-            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).ToList();
+            data = data.Skip((search.pageIndex - 1) * search.pageSize).Take(search.pageSize).OrderBy(x => x.LoaiTuDienId).ToList();
             listData.List = data.Select(x => new TuDienModel
             {
                 Id = x.Id,
