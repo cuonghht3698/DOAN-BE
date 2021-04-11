@@ -138,11 +138,11 @@ namespace Device_BE.Controllers
             {
                 Id = x.Id,
                 Ten = x.Ten,
-                Ram = x.CauHinh.Ram,
-                ManHinh = x.CauHinh.ManHinh,
-                Rom = x.CauHinh.Dungluong,
-                Cpu = x.CauHinh.Cpu,
-                Pin = x.CauHinh.Pin,
+                Ram = x.CauHinh != null ? x.CauHinh.Ram : "",
+                ManHinh = x.CauHinh != null ? x.CauHinh.ManHinh : "",
+                Rom = x.CauHinh != null ? x.CauHinh.Dungluong : "",
+                Cpu = x.CauHinh != null ? x.CauHinh.Cpu : "",
+                Pin = x.CauHinh != null ? x.CauHinh.Pin: "",
                 MoTa = x.MoTa,
                 ImageUrl = x.ImageUrl
 
