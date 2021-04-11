@@ -101,10 +101,10 @@ namespace Device_BE.Controllers
                 x.Rate,
                 x.ViewCount,
                 x.KhuyenMai,
-                x.CauHinh.Ram,
-                x.CauHinh.ManHinh,
-                x.CauHinh.Dungluong,
-                x.CauHinh.Cpu
+                Ram = x.CauHinh != null ? x.CauHinh.Ram : "",
+                ManHinh = x.CauHinh != null ? x.CauHinh.ManHinh : "",
+                Dungluong = x.CauHinh != null ? x.CauHinh.Dungluong : "",
+                Cpu = x.CauHinh != null ? x.CauHinh.Cpu : ""
             });
             return Ok(listData);
         }
