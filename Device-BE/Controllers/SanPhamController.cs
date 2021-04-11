@@ -67,7 +67,7 @@ namespace Device_BE.Controllers
             var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.CauHinh).Include(x => x.HangSx).ToListAsync();
             if (!String.IsNullOrEmpty(search.sSearch))
             {
-                data = data.Where(x => x.Ten.Contains(search.sSearch)).ToList();
+                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower()) || x.HangSx.Ten.ToLower().Contains(search.sSearch.ToLower())).ToList();
             }
             if (!String.IsNullOrEmpty(search.LoaiSP))
             {
@@ -264,5 +264,17 @@ namespace Device_BE.Controllers
             return NoContent();
 
         }
+        [Route("updateView")]
+        [HttpGet]
+        public ActionResult updateView(Guid Id)
+        {
+            var data =  _context.DmsanPham.Find(Id);
+            data.ViewCount += 1;
+            _context.DmsanPham.Update(data);
+           _context.SaveChanges();
+            return NoContent();
+
+        }
+
     }
 }

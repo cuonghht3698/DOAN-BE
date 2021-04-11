@@ -68,7 +68,7 @@ namespace WebApi.Func
                     }
                     catch (Exception)
                     {
-                       // Common.LogEx.GetLogger().Debug("CopyTo: Khong copy duoc source! -> {0} -> {1}", info.Name, ex.GetInnerException());
+                     
                     }
                 }
             }

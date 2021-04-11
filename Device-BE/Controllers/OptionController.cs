@@ -26,7 +26,7 @@ namespace Device_BE.Controllers
         [Route("GetPage")]
         public ActionResult GetPage(ModelSearchSP model)
         {
-            var data = _context.DmsanPham.Include(x => x.OptionSanPham).ToList();
+            var data = _context.DmsanPham.Include(x => x.OptionSanPham).Include(x => x.CauHinh).ToList();
             if (!String.IsNullOrEmpty(model.sSearch))
             {
                 data = data.Where(x => x.Ten.Contains(model.sSearch)).ToList();
@@ -42,6 +42,10 @@ namespace Device_BE.Controllers
                 x.GiaMacDinh,
                 x.ViewCount,
                 x.ImageUrl,
+                x.CauHinh.Ram,
+                x.CauHinh.ManHinh,
+                x.CauHinh.Dungluong,
+                x.CauHinh.Cpu,
                 ListOption = x.OptionSanPham.Select(y => new
                 {
                     y.Id,
@@ -57,19 +61,7 @@ namespace Device_BE.Controllers
 
         }
 
-        [HttpGet]
-        [Route("GetTonKho")]
-        public ActionResult GetTonKho()
-        {
-            var ranks = _context.Database.ExecuteSqlCommand("exec get_ton_kho");
-            return Ok(ranks);
-
-
-
-
-
-        }
-
+       
         [HttpGet]
         [Route("GetOptionByHang")]
         public ActionResult GetOptionByHang(string MaHang,int PageIndex, int PageSize)
