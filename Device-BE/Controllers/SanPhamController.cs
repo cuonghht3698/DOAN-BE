@@ -64,7 +64,7 @@ namespace Device_BE.Controllers
                 search.GiaDen = 0;
             }
             ListSelect listData = new ListSelect();
-            var data = await _context.DmsanPham.Include(x =>x.LoaiSp).Include(x => x.CauHinh).Include(x => x.HangSx).ToListAsync();
+            var data = await _context.DmsanPham.Include(x => x.LoaiSp).Include(x => x.CauHinh).Include(x => x.HangSx).ToListAsync();
             if (!String.IsNullOrEmpty(search.sSearch))
             {
                 data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower()) || x.HangSx.Ten.ToLower().Contains(search.sSearch.ToLower())).ToList();
@@ -91,7 +91,8 @@ namespace Device_BE.Controllers
             }
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
-            listData.List = data.Select(x => new {
+            listData.List = data.Select(x => new
+            {
                 x.Id,
                 x.Ten,
                 x.GiaMacDinh,
@@ -119,10 +120,10 @@ namespace Device_BE.Controllers
         [Route("GetByLoaiMa/{ma}")]
         public ActionResult GetByLoaiMa(string ma)
         {
-          // var tudien =  _context.CmtuDien.Where(x => x.MaTuDien.Equals(ma)).ToList();
+            // var tudien =  _context.CmtuDien.Where(x => x.MaTuDien.Equals(ma)).ToList();
 
             var data = _context.OptionSanPham.Where(x => x.SanPham.LoaiSp.MaTuDien == ma).ToList();
-           
+
             return Ok(data);
         }
         [HttpGet]
@@ -142,7 +143,7 @@ namespace Device_BE.Controllers
                 ManHinh = x.CauHinh != null ? x.CauHinh.ManHinh : "",
                 Rom = x.CauHinh != null ? x.CauHinh.Dungluong : "",
                 Cpu = x.CauHinh != null ? x.CauHinh.Cpu : "",
-                Pin = x.CauHinh != null ? x.CauHinh.Pin: "",
+                Pin = x.CauHinh != null ? x.CauHinh.Pin : "",
                 MoTa = x.MoTa,
                 ImageUrl = x.ImageUrl
 
@@ -158,11 +159,11 @@ namespace Device_BE.Controllers
             {
                 Id = x.Id,
                 Ten = x.Ten,
-                Ram = x.CauHinh.Ram,
-                ManHinh = x.CauHinh.ManHinh,
-                Rom = x.CauHinh.Dungluong,
-                Cpu = x.CauHinh.Cpu,
-                Pin = x.CauHinh.Pin,
+                Ram = x.CauHinh != null ? x.CauHinh.Ram : "",
+                ManHinh = x.CauHinh != null ? x.CauHinh.ManHinh : "",
+                Rom = x.CauHinh != null ? x.CauHinh.Dungluong : "",
+                Cpu = x.CauHinh != null ? x.CauHinh.Cpu : "",
+                Pin = x.CauHinh != null ? x.CauHinh.Pin : "",
                 MoTa = x.MoTa,
                 ImageUrl = x.ImageUrl
 
@@ -244,7 +245,8 @@ namespace Device_BE.Controllers
             }
             list.total = data.Count;
             data = data.OrderBy(x => x.ThoiGianTao).Skip(model.pageIndex * model.pageSize).Take(model.pageSize).ToList();
-            list.List = data.Select(x => new { 
+            list.List = data.Select(x => new
+            {
                 Id = x.Id,
                 Ten = x.Ten,
                 ThongSoKyThuat = x.ThongSoKyThuat,
@@ -268,10 +270,10 @@ namespace Device_BE.Controllers
         [HttpGet]
         public ActionResult updateView(Guid Id)
         {
-            var data =  _context.DmsanPham.Find(Id);
+            var data = _context.DmsanPham.Find(Id);
             data.ViewCount += 1;
             _context.DmsanPham.Update(data);
-           _context.SaveChanges();
+            _context.SaveChanges();
             return NoContent();
 
         }

@@ -42,7 +42,7 @@ namespace Device_BE.Controllers
                 SmtpServer.Send(mail);
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }
