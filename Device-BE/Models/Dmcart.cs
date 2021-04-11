@@ -23,6 +23,7 @@ namespace Device_BE.Models
         public DateTime? NgayHoanThanh { get; set; }
         public string HoTen { get; set; }
         public string Email { get; set; }
+        public string ClientId { get; set; }
 
         public virtual CmtuDien LoaiGiaoDich { get; set; }
         public virtual Htuser NhanVien { get; set; }

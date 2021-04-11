@@ -22,6 +22,8 @@ namespace Device_BE.DTO
         public DateTime? NgayHoanThanh { get; set; }
         public string HoTen { get; set; }
         public string Email { get; set; }
+        public string ClientId { get; set; }
+
     }
     public class GiaoHangModel
     {

@@ -33,22 +33,31 @@ namespace Device_BE.Controllers
         }
 
         [HttpGet]
-        [Route("CheckCart/{UserId}")]
-        public IEnumerable<Dmcart> CheckCart(Guid UserId)
+        [Route("CheckCart")]
+        public IEnumerable<Dmcart> CheckCart(Guid UserId, string ClientId)
         {
             Guid TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
 
             var data = _context.Dmcart.Where(x => x.UserId == UserId && x.TrangThaiId == TrangThaiId);
+            var user = _context.Htuser.Find(UserId);
+            if (user.Username == "khachhang")
+            {
+                data = data.Where(x => x.ClientId == ClientId);
+            }
             return data;
         }
 
         [HttpGet]
-        [Route("ShowShoppingCart/{UserId}")]
-        public ActionResult ShowShoppingCart(Guid UserId)
+        [Route("ShowShoppingCart")]
+        public ActionResult ShowShoppingCart(Guid UserId, string ClientId)
         {
             Guid TT = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
             var data = _context.Dmcart.Where(x => x.TrangThaiId == TT && x.UserId == UserId).ToList();
-
+            var user = _context.Htuser.Find(UserId);
+            if (user.Username == "khachhang")
+            {
+                data = data.Where(x => x.ClientId == ClientId).ToList();
+            }
             var query = from d in data
                         join cd in _context.DmcartDetail on d.Id equals cd.CartId
                         join sp in _context.DmsanPham on cd.SanPhamId equals sp.Id
