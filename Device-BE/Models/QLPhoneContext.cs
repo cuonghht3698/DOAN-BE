@@ -207,6 +207,8 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Mau).HasMaxLength(30);
 
+                entity.Property(e => e.SoLuong).HasColumnType("decimal(18, 2)");
+
                 entity.Property(e => e.ThoiGianTao).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Cart)

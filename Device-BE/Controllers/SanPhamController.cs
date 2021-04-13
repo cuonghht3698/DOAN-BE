@@ -145,7 +145,8 @@ namespace Device_BE.Controllers
                 Cpu = x.CauHinh != null ? x.CauHinh.Cpu : "",
                 Pin = x.CauHinh != null ? x.CauHinh.Pin : "",
                 MoTa = x.MoTa,
-                ImageUrl = x.ImageUrl
+                ImageUrl = x.ImageUrl,
+                Gia = x.GiaMacDinh
 
             });
             return Ok(list);

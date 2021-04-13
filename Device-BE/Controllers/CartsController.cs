@@ -1,4 +1,5 @@
-﻿using Device_BE.DTO;
+﻿using Device_BE.Database;
+using Device_BE.DTO;
 using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -210,6 +211,49 @@ namespace Device_BE.Controllers
             data.NhanVienId = cart.NhanVienId;
             data.TrangThaiId = _context.CmtuDien.Where(x => x.MaTuDien == "DaHoanThanh").FirstOrDefault().Id;
             _context.Entry(data).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("TaoHoaDon")]
+        public ActionResult TaoHoaDon(TaoHoaDonModel hoadon)
+        {
+            if (hoadon.DSSanPham.Count == 0)
+            {
+                return BadRequest();
+            }
+            if (String.IsNullOrEmpty(hoadon.HoTen))
+            {
+                return BadRequest();
+
+            }
+            if (String.IsNullOrEmpty(hoadon.DiaChi))
+            {
+                return BadRequest();
+
+            }
+            if (String.IsNullOrEmpty(hoadon.Sdt))
+            {
+                return BadRequest();
+
+            }
+
+            Guid IdTrangThai = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
+            var data = hoadon.CopyAs<Dmcart>();
+            data.Id = Guid.NewGuid();
+            data.TrangThaiId = IdTrangThai;
+            data.ThoiGianTao = DateTime.Now;
+            data.TinNhan = "Khách hàng " + data.HoTen;
+            _context.Dmcart.Add(data);
+            foreach (var item in hoadon.DSSanPham)
+            {
+                var detail = item.CopyAs<DmcartDetail>();
+                detail.Id = Guid.NewGuid();
+                detail.ThoiGianTao = DateTime.Now;
+                detail.CartId = data.Id;
+                _context.DmcartDetail.Add(detail);
+            }
             _context.SaveChanges();
             return NoContent();
         }

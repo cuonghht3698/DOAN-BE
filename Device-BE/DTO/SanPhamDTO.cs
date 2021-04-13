@@ -19,6 +19,8 @@ namespace Device_BE.DTO
 
         public string Cpu { get; set; }
         public string Pin { get; set; }
+        public Decimal Gia { get; set; }
+
 
     }
 

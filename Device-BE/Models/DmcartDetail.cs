@@ -13,7 +13,7 @@ namespace Device_BE.Models
         public Guid OptionId { get; set; }
         public string Mau { get; set; }
         public decimal? Gia { get; set; }
-        public int? SoLuong { get; set; }
+        public decimal SoLuong { get; set; }
 
         public virtual Dmcart Cart { get; set; }
         public virtual OptionSanPham Option { get; set; }
