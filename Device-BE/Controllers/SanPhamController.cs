@@ -1,5 +1,6 @@
 ﻿using Device_BE.Database;
 using Device_BE.DTO;
+using Device_BE.Function;
 using Device_BE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -278,6 +279,26 @@ namespace Device_BE.Controllers
             return NoContent();
 
         }
+        [Route("GetNhapByTenLoaiHang")]
+        [HttpGet]
+        public ActionResult GetNhap(string Ten, Guid LoaiSpid, Guid HangSxid)
+        {
+            var data = _context.DmsanPham.ToList();
+            if (Ten.IsNotNullOrEmpty())
+            {
+                data = data.Where(x => x.Ten.ToLower().Contains(Ten.ToLower())).ToList();
+            }
+            if (LoaiSpid != null)
+            {
+                data = data.Where(x => x.LoaiSpid == LoaiSpid).ToList();
+            }
+            if (HangSxid != null)
+            {
+                data = data.Where(x => x.HangSxid == HangSxid).ToList();
+            }
+            data = data.Take(10).ToList();
+            return Ok(data);
 
+        }
     }
 }

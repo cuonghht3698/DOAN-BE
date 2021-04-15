@@ -11,5 +11,14 @@ namespace Device_BE.Function
         {
             return string.IsNullOrEmpty(value);
         }
+        public static bool IsNotNullOrEmpty(this string value)
+        {
+            if (value != "" && value != null)
+            {
+                return true;
+            }
+            return false;
+           
+        }
     }
 }

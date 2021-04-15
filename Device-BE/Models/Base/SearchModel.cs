@@ -11,11 +11,11 @@ namespace Device_BE.Models
         public string sSearch { get; set; }
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
-        public string? LoaiSP { get; set; }
-        public string? HangSX { get; set; }
+        public string LoaiSP { get; set; }
+        public string HangSX { get; set; }
 
-        public decimal? GiaTu { get; set; }
-        public decimal? GiaDen { get; set; }
+        public decimal GiaTu { get; set; }
+        public decimal GiaDen { get; set; }
 
         public string Ram { get; set; }
         public string DungLuong { get; set; }
