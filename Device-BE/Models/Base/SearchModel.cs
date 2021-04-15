@@ -26,6 +26,7 @@ namespace Device_BE.Models
         public Guid? TrangThaiId { get; set; }
         public DateTime? TuNgay { get; set; }
         public DateTime? DenNgay { get; set; }
+        public Guid? IdNguoiTao { get; set; }
 
     }
 }

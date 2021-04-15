@@ -16,6 +16,7 @@ namespace Device_BE.Models
             DmtinhThanh = new HashSet<DmtinhThanh>();
             HstinNhan = new HashSet<HstinNhan>();
             Htuser = new HashSet<Htuser>();
+            UcnhapKho = new HashSet<UcnhapKho>();
         }
 
         public Guid Id { get; set; }
@@ -37,5 +38,6 @@ namespace Device_BE.Models
         public virtual ICollection<DmtinhThanh> DmtinhThanh { get; set; }
         public virtual ICollection<HstinNhan> HstinNhan { get; set; }
         public virtual ICollection<Htuser> Htuser { get; set; }
+        public virtual ICollection<UcnhapKho> UcnhapKho { get; set; }
     }
 }

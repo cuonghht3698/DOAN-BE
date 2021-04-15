@@ -11,6 +11,7 @@ namespace Device_BE.Models
             DmcartDetail = new HashSet<DmcartDetail>();
             Hscmt = new HashSet<Hscmt>();
             OptionSanPham = new HashSet<OptionSanPham>();
+            UcchiTietNhapKho = new HashSet<UcchiTietNhapKho>();
         }
 
         public Guid Id { get; set; }
@@ -45,5 +46,6 @@ namespace Device_BE.Models
         public virtual ICollection<DmcartDetail> DmcartDetail { get; set; }
         public virtual ICollection<Hscmt> Hscmt { get; set; }
         public virtual ICollection<OptionSanPham> OptionSanPham { get; set; }
+        public virtual ICollection<UcchiTietNhapKho> UcchiTietNhapKho { get; set; }
     }
 }

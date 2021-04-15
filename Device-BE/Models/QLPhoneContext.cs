@@ -41,13 +41,15 @@ namespace Device_BE.Models
         public virtual DbSet<Htuser> Htuser { get; set; }
         public virtual DbSet<HtuserRole> HtuserRole { get; set; }
         public virtual DbSet<OptionSanPham> OptionSanPham { get; set; }
+        public virtual DbSet<UcchiTietNhapKho> UcchiTietNhapKho { get; set; }
+        public virtual DbSet<UcnhapKho> UcnhapKho { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-3LF9ATD;Database=QLPhone;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-90R2L20;Database=QLPhone;Trusted_Connection=True;");
             }
         }
 
@@ -156,9 +158,7 @@ namespace Device_BE.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.ClientId)
-                    .HasColumnName("ClientID")
-                    .HasMaxLength(20);
+                entity.Property(e => e.ClientId).HasMaxLength(50);
 
                 entity.Property(e => e.DiaChi).HasMaxLength(120);
 
@@ -645,6 +645,65 @@ namespace Device_BE.Models
                     .WithMany(p => p.OptionSanPham)
                     .HasForeignKey(d => d.SanPhamId)
                     .HasConstraintName("fk_OptionSanPham_SanPhamId");
+            });
+
+            modelBuilder.Entity<UcchiTietNhapKho>(entity =>
+            {
+                entity.ToTable("UCChiTietNhapKho");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Gia).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Ram).HasMaxLength(50);
+
+                entity.Property(e => e.Rom).HasMaxLength(50);
+
+                entity.HasOne(d => d.IdNhapKhoNavigation)
+                    .WithMany(p => p.UcchiTietNhapKho)
+                    .HasForeignKey(d => d.IdNhapKho)
+                    .HasConstraintName("fk_UCChiTietNhapKho_IdNhapKho");
+
+                entity.HasOne(d => d.IdOptionNavigation)
+                    .WithMany(p => p.UcchiTietNhapKho)
+                    .HasForeignKey(d => d.IdOption)
+                    .HasConstraintName("fk_UCChiTietNhapKho_IdOption");
+
+                entity.HasOne(d => d.IdSanPhamNavigation)
+                    .WithMany(p => p.UcchiTietNhapKho)
+                    .HasForeignKey(d => d.IdSanPham)
+                    .HasConstraintName("fk_UCChiTietNhapKho_IdSanPham");
+            });
+
+            modelBuilder.Entity<UcnhapKho>(entity =>
+            {
+                entity.ToTable("UCNhapKho");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.GhiChu).HasMaxLength(200);
+
+                entity.Property(e => e.NgayHoanThanh).HasColumnType("datetime");
+
+                entity.Property(e => e.NgayTao).HasColumnType("datetime");
+
+                entity.Property(e => e.SoHd)
+                    .HasColumnName("SoHD")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Ten).HasMaxLength(200);
+
+                entity.Property(e => e.TongTien).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.IdNguoiTaoNavigation)
+                    .WithMany(p => p.UcnhapKho)
+                    .HasForeignKey(d => d.IdNguoiTao)
+                    .HasConstraintName("fk_uc_IdNguoiTao");
+
+                entity.HasOne(d => d.IdTrangThaiNavigation)
+                    .WithMany(p => p.UcnhapKho)
+                    .HasForeignKey(d => d.IdTrangThai)
+                    .HasConstraintName("fk_uc_IdTrangThai");
             });
 
             OnModelCreatingPartial(modelBuilder);
