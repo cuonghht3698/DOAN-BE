@@ -38,9 +38,10 @@ namespace Device_BE
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers();
-            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Pc")));
+            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Somee")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
-            services.Configure<FormOptions>(o => {
+            services.Configure<FormOptions>(o =>
+            {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
@@ -109,7 +110,7 @@ namespace Device_BE
             });
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-           
+
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();

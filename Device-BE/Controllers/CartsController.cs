@@ -239,10 +239,11 @@ namespace Device_BE.Controllers
 
             }
 
-            Guid IdTrangThai = _context.CmtuDien.Where(x => x.MaTuDien == "DangGiaoDich").FirstOrDefault().Id;
+            Guid IdTrangThai = _context.CmtuDien.Where(x => x.MaTuDien == "DaHoanThanh").FirstOrDefault().Id;
             var data = hoadon.CopyAs<Dmcart>();
             data.Id = Guid.NewGuid();
             data.TrangThaiId = IdTrangThai;
+            data.NgayHoanThanh = DateTime.Now;
             data.ThoiGianTao = DateTime.Now;
             data.TinNhan = "Khách hàng " + data.HoTen;  
             _context.Dmcart.Add(data);
