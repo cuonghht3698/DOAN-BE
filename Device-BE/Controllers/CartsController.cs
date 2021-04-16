@@ -216,7 +216,7 @@ namespace Device_BE.Controllers
         }
 
         [HttpPost]
-        [Route("TaoHoaDon")]
+        [Route("taohoadon")]
         public ActionResult TaoHoaDon(TaoHoaDonModel hoadon)
         {
             if (hoadon.DSSanPham.Count == 0)
@@ -244,7 +244,7 @@ namespace Device_BE.Controllers
             data.Id = Guid.NewGuid();
             data.TrangThaiId = IdTrangThai;
             data.ThoiGianTao = DateTime.Now;
-            data.TinNhan = "Khách hàng " + data.HoTen;
+            data.TinNhan = "Khách hàng " + data.HoTen;  
             _context.Dmcart.Add(data);
             foreach (var item in hoadon.DSSanPham)
             {

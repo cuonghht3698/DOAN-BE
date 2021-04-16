@@ -56,6 +56,12 @@ namespace Device_BE.Controllers
         [Route("CreateOrGet/{UserId}")]
         public ActionResult CreateOrGet(Guid UserId)
         {
+            var check = _context.Htuser.Find(UserId).Username;
+            if (check == "khachhang")
+            {
+                return BadRequest();
+            }
+
             var data = _context.HstinNhan.Where(x => x.UserId == UserId).FirstOrDefault();
             if (data == null)
             {
