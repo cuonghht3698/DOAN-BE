@@ -1,10 +1,12 @@
-﻿using Device_BE.Models;
+﻿using Dapper;
+using Device_BE.Models;
 using Device_BE.Models.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Func;
@@ -33,7 +35,7 @@ namespace Device_BE.Controllers
             var query = from td in data
                         join ur in _context.HtuserRole on td.Id equals ur.UserId
                         join rl in _context.Htrole on ur.RoleId equals rl.Id
-                         select (td,rl);
+                        select (td, rl);
             if (!String.IsNullOrEmpty(search.sSearch))
             {
                 search.sSearch = search.sSearch.ToLower();
@@ -50,7 +52,9 @@ namespace Device_BE.Controllers
                 NgaySinh = x.td.NgaySinh.GetValueOrDefault(),
                 Username = x.td.Username,
                 GioiThieu = x.td.GioiThieu,
-                Role = x.rl.Ten
+                Role = x.rl.Ten,
+                RoleId = x.rl.Id,
+                Code = x.rl.Code,
             }).ToList();
             return Ok(listData);
         }
@@ -70,8 +74,8 @@ namespace Device_BE.Controllers
                 TenKhongDau = user.TenKhongDau,
                 NgaySinh = (DateTime)user.NgaySinh.Value,
                 Username = user.Username,
-                GioiThieu = user.GioiThieu != null? user.GioiThieu:""
-            }); ;
+                GioiThieu = user.GioiThieu != null ? user.GioiThieu : ""
+            });
         }
 
         [HttpPost]
@@ -83,7 +87,7 @@ namespace Device_BE.Controllers
             var passNew = PasswordHash.EncodePassword(model.PasswordNew);
             if (passOld == user.PasswordHash)
             {
-                if(model.PasswordNew == model.PasswordConfirm)
+                if (model.PasswordNew == model.PasswordConfirm)
                 {
                     user.PasswordHash = passNew;
                     _context.Htuser.Update(user);
@@ -126,21 +130,70 @@ namespace Device_BE.Controllers
             {
                 user.PasswordHash = PasswordHash.EncodePassword(model.Password);
             }
-            _context.Entry(user).State = EntityState.Modified;
+            var role = _context.Htrole.Where(x => x.Code == model.Role).FirstOrDefault();
+
+            using (var cnn = (_context as DbContext).Database.GetDbConnection())
+            {
+                var cmm = cnn.CreateCommand();
+                var p = new DynamicParameters();
+
+                p.Add("UserId", user.Id);
+                p.Add("RoleId", role.Id);
+
+               cnn.Query("changeRole", p, commandType: CommandType.StoredProcedure);
+
+            }
+            _context.Htuser.Update(user);
             _context.SaveChanges();
             return NoContent();
         }
+    
+    [HttpPost]
+    [Route("create")]
+    public ActionResult Create(UserModel model)
+    {
 
-        [HttpDelete("{id}")]
-        public ActionResult Delete (Guid id)
+        var used = _context.Htuser.ToList().Where(x => x.Username == model.Username);
+
+        if (used.Count() > 0)
         {
-            var role = _context.HtuserRole.Where(x =>x.UserId == id);
-           _context.HtuserRole.Remove(role.FirstOrDefault());
-
-            _context.Htuser.Remove(_context.Htuser.Find(id));
-            _context.SaveChanges();
-            return Ok(role);
+            return BadRequest();
         }
+        var password = PasswordHash.EncodePassword(model.Password);
+        model.Id = Guid.NewGuid();
+        var applicationUser = model.CopyAs<Htuser>();
+        applicationUser.PasswordHash = password;
+        try
+        {
+            _context.Htuser.Add(applicationUser);
 
+
+            var role = new HtuserRole
+            {
+
+                UserId = model.Id,
+                RoleId = _context.Htrole.Where(x => x.Code == model.Role).FirstOrDefault().Id
+            };
+            _context.HtuserRole.Add(role);
+            _context.SaveChanges();
+            return Ok(applicationUser);
+        }
+        catch (Exception e)
+        {
+
+            throw e;
+        }
     }
+    [HttpDelete("{id}")]
+    public ActionResult Delete(Guid id)
+    {
+        var role = _context.HtuserRole.Where(x => x.UserId == id);
+        _context.HtuserRole.Remove(role.FirstOrDefault());
+
+        _context.Htuser.Remove(_context.Htuser.Find(id));
+        _context.SaveChanges();
+        return Ok(role);
+    }
+
+}
 }

@@ -19,8 +19,17 @@ namespace Device_BE.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public ActionResult GetAll()
+        {
+            var data = _context.Htrole.Select(x => new
+            {
+                x.Ten,
+                x.Code
+            }).ToList();
 
- 
+            return Ok(data);
+        }
 
         [HttpPost]
         [Route("getPage")]

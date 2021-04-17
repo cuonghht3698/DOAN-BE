@@ -40,7 +40,7 @@ namespace Device_BE.Controllers
         [HttpGet("{id}")]
         public IEnumerable<MenuModel> getRoleMenu(Guid id)
         {
-            var data = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.Menu.IsParent == true).ToList();
+            var data = _context.HtroleMenu.Include(x => x.Menu).Where(x => x.Menu.IsParent == true && x.RoleId == id).ToList();
             var dataCon = _context.HtroleMenu.Where(x => x.RoleId == id).Include(x => x.Menu).Where(x => x.Menu.IsParent == false).ToList();
 
             List<MenuCon> con = new List<MenuCon>();

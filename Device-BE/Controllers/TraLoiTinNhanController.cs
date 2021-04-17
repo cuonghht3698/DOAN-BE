@@ -19,11 +19,11 @@ namespace Device_BE.Controllers
         {
             _context = context;
         }
-        [HttpGet("{Id}")]
-        public IEnumerable<TraLoiTinNhanModel> Get(Guid Id)
+        [HttpGet]
+        public IEnumerable<TraLoiTinNhanModel> Get(Guid Id, int Size)
         {
-            var data = _context.HstraLoiTinNhan.Where(x => x.IdTinNhan == Id).OrderBy(x => x.ThoiGianTao).ToList();
-            var s = data.Select(x => new TraLoiTinNhanModel
+            var data = _context.HstraLoiTinNhan.Where(x => x.IdTinNhan == Id).OrderByDescending(x => x.ThoiGianTao).ToList();
+            var s = data.Take(Size).Select(x => new TraLoiTinNhanModel
             {
 
                 Id = x.Id,
@@ -33,7 +33,7 @@ namespace Device_BE.Controllers
                 ThoiGianTao = x.ThoiGianTao,
                 Watched = x.Watched 
             });
-            return s;
+            return s.OrderBy(x => x.ThoiGianTao);
         }
       
         [HttpGet]
@@ -94,9 +94,7 @@ namespace Device_BE.Controllers
         public ActionResult ThuHoi(Guid id)
         {
             var tt = _context.HstraLoiTinNhan.Find(id);
-            tt.NoiDung = "Đã thu hồi";
-            tt.ThoiGianTao = DateTime.Now;
-            _context.HstraLoiTinNhan.Update(tt);
+            _context.HstraLoiTinNhan.Remove(tt);
             _context.SaveChanges();
             return NoContent();
         }

@@ -40,6 +40,11 @@ namespace Device_BE.Models
         public string GioiThieu { get; set; }
 
         public string Role { get; set; }
+        public Guid RoleId { get; set; }
+        public string Code { get; set; }
+
+
+
 
         public string Password { get; set; }
 
