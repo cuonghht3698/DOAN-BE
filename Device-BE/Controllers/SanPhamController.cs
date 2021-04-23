@@ -45,6 +45,41 @@ namespace Device_BE.Controllers
         {
             ListSelect listData = new ListSelect();
             var data = await _context.DmsanPham.Include(ch => ch.CauHinh).ToListAsync();
+            if (search.sSearch.IsNotNullOrEmpty())
+            {
+                data = data.Where(x => x.Ten.ToLower().Contains(search.sSearch.ToLower())).ToList();
+            }
+            if (search.IdLoaiSanPham != null)
+            {
+                data = data.Where(x => x.LoaiSpid == search.IdLoaiSanPham).ToList();
+            }
+            if (search.IdHangSanXuat != null)
+            {
+                data = data.Where(x => x.HangSxid == search.IdHangSanXuat).ToList();
+            }
+            if (search.GiaTu != 0)
+            {
+                data = data.Where(x => x.GiaMacDinh >= search.GiaTu).ToList();
+
+            }
+            if (search.GiaDen != 0)
+            {
+                data = data.Where(x => x.GiaMacDinh <= search.GiaDen).ToList();
+
+            }
+            if (search.Active.IsNotNullOrEmpty() && search.Active != "2")
+            {
+                if (search.Active == "1")
+                {
+                    data = data.Where(x => x.Active == true).ToList();
+                }
+                else
+                {
+                    data = data.Where(x => x.Active == false).ToList();
+
+                }
+
+            }
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
             listData.List = data;
@@ -129,12 +164,20 @@ namespace Device_BE.Controllers
         }
         [HttpGet]
         [Route("getByName")]
-        public ActionResult GetNhapHangSP(string search)
+        public ActionResult GetNhapHangSP(string search, Guid? IdLoai,Guid? IdHang)
         {
             var data = _context.DmsanPham.Include(x => x.CauHinh).ToList();
             if (!String.IsNullOrEmpty(search))
             {
                 data = data.Where(x => x.Ten.Contains(search)).ToList();
+            }
+            if (IdLoai != null)
+            {
+                data = data.Where(x => x.LoaiSpid == IdLoai).ToList();
+            }
+            if (IdHang != null)
+            {
+                data = data.Where(x => x.HangSxid == IdHang).ToList();
             }
             var list = data.Select(x => new SanPhamDTO
             {

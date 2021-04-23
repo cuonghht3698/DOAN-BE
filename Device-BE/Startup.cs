@@ -38,7 +38,7 @@ namespace Device_BE
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers();
-            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PC")));
+            services.AddDbContext<QLPhoneContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Pc")));
             services.Configure<ApplicationSetting>(Configuration.GetSection("ApplicationSettings"));
             services.Configure<FormOptions>(o =>
             {

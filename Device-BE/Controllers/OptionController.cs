@@ -72,7 +72,7 @@ namespace Device_BE.Controllers
                         join s in _context.DmsanPham on o.SanPhamId equals s.Id
                         join ch in _context.DmcauHinh on s.CauHinhId equals ch.Id
                         join cm in _context.CmtuDien on s.HangSxid equals cm.Id
-                        where MaHang == "" || cm.MaTuDien.Equals(MaHang)
+                        where s.Active == true  && (MaHang == null || cm.MaTuDien.Equals(MaHang))
                         group o by new
                         {
                             o.SanPhamId,

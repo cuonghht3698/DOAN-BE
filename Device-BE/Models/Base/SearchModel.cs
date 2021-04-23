@@ -22,11 +22,13 @@ namespace Device_BE.Models
 
         public Guid? LoaiTuDienId { get; set; }
         public Guid? IdLoaiSanPham { get; set; }
+        public Guid? IdHangSanXuat { get; set; }
         public Guid? IdSanPham { get; set; }
         public Guid? TrangThaiId { get; set; }
         public DateTime? TuNgay { get; set; }
         public DateTime? DenNgay { get; set; }
         public Guid? IdNguoiTao { get; set; }
+        public string Active { get; set; }
 
     }
 }
