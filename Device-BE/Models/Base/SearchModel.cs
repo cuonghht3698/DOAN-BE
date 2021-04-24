@@ -21,6 +21,8 @@ namespace Device_BE.Models
         public string DungLuong { get; set; }
 
         public Guid? LoaiTuDienId { get; set; }
+
+        public Guid? RoleId { get; set; }
         public Guid? IdLoaiSanPham { get; set; }
         public Guid? IdHangSanXuat { get; set; }
         public Guid? IdSanPham { get; set; }

@@ -24,6 +24,7 @@ namespace Device_BE.Controllers
         {
             var data = _context.Htrole.Select(x => new
             {
+                x.Id,
                 x.Ten,
                 x.Code
             }).ToList();

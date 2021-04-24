@@ -42,5 +42,15 @@ namespace Device_BE.Controllers
             view = call.BaoCao("tong_hop_trang_thai_don_hang", param);
             return view;
         }
+
+        [HttpPost]
+        [Route("Baocaotheonhanvien")]
+        public IEnumerable<BaoCaoNhanVienDTO> bao_cao_theo_nhan_vien(Dictionary<string, object> param)
+        {
+            IEnumerable<BaoCaoNhanVienDTO> view;
+            CallProcedure<BaoCaoNhanVienDTO> call = new CallProcedure<BaoCaoNhanVienDTO>(_context);
+            view = call.BaoCao("bao_cao_theo_nhan_vien", param);
+            return view;
+        }
     }
 }

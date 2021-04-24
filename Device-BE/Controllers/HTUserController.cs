@@ -32,9 +32,11 @@ namespace Device_BE.Controllers
             var data = await _context.Htuser.ToListAsync();
             listData.total = data.Count();
             data = data.Skip((search.pageIndex) * search.pageSize).Take(search.pageSize).ToList();
+
             var query = from td in data
                         join ur in _context.HtuserRole on td.Id equals ur.UserId
                         join rl in _context.Htrole on ur.RoleId equals rl.Id
+                        where (search.RoleId is null || ur.RoleId.Equals(search.RoleId.Value))
                         select (td, rl);
             if (!String.IsNullOrEmpty(search.sSearch))
             {
@@ -107,8 +109,12 @@ namespace Device_BE.Controllers
         public ActionResult ChangeProfile([FromBody] MyProfileModel model)
         {
             var user = _context.Htuser.Find(model.Id);
-            var dataChange = model.CopyAs<Htuser>();
-            _context.Entry(dataChange).State = EntityState.Modified;
+            user.Email = model.Email;
+            user.DiaChi = model.DiaChi;
+            user.SoDienThoai = model.SoDienThoai;
+            user.GioiThieu = model.GioiThieu;
+            user.HoTen = model.HoTen;
+            _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
             return Ok(model);
         }
@@ -117,18 +123,18 @@ namespace Device_BE.Controllers
         [Route("updateUser")]
         public ActionResult updateUser(MyProfileModel model)
         {
-            var user = _context.Htuser.Find(model.Id);
-            user.HoTen = model.HoTen;
-            user.SoDienThoai = model.SoDienThoai;
-            user.TenKhongDau = model.HoTen;
-            user.NgaySinh = model.NgaySinh;
-            user.GioiThieu = model.GioiThieu;
-            user.Email = model.Email;
-            user.DiaChi = model.DiaChi;
-            user.Username = model.Username;
+            //var user = _context.Htuser.Find(model.Id);
+            //user.HoTen = model.HoTen;
+            //user.SoDienThoai = model.SoDienThoai;
+            //user.TenKhongDau = model.HoTen;
+            //user.NgaySinh = model.NgaySinh;
+            //user.GioiThieu = model.GioiThieu;
+            //user.Email = model.Email;
+            //user.DiaChi = model.DiaChi;
+            //user.Username = model.Username;
             if (model.Password != "")
             {
-                user.PasswordHash = PasswordHash.EncodePassword(model.Password);
+                model.Password = PasswordHash.EncodePassword(model.Password);
             }
             var role = _context.Htrole.Where(x => x.Code == model.Role).FirstOrDefault();
 
@@ -136,15 +142,19 @@ namespace Device_BE.Controllers
             {
                 var cmm = cnn.CreateCommand();
                 var p = new DynamicParameters();
-
-                p.Add("UserId", user.Id);
+                p.Add("UserId", model.Id);
                 p.Add("RoleId", role.Id);
+                p.Add("HoTen", model.HoTen);
+                p.Add("SoDienThoai", model.SoDienThoai);
+                p.Add("Email", model.Email);
+                p.Add("DiaChi", model.DiaChi);
+                p.Add("Password", model.Password);
 
-               cnn.Query("changeRole", p, commandType: CommandType.StoredProcedure);
+                cnn.Query("changeRole", p, commandType: CommandType.StoredProcedure);
 
             }
-            _context.Htuser.Update(user);
-            _context.SaveChanges();
+            //_context.Htuser.Update(user);
+            //_context.SaveChanges();
             return NoContent();
         }
     
